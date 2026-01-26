@@ -1503,6 +1503,15 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script>
+        // Add this at the top of your <script> section
+const correctPassword = "vita3046"; // Change this!
+const userPassword = prompt("Enter access code:");
+if (userPassword !== correctPassword) {
+    document.body.innerHTML = "<h1>Access Denied</h1>";
+    throw new Error("Access denied");
+}
+    </script>
+    <script>
         const itemNames = {
             item1: { name: "Dreo Cylinder Heater", room: "Electronics" },
             item2: { name: "Alexa Speaker - Kitchen", room: "Electronics" },
