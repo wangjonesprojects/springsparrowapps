@@ -404,6 +404,15 @@
             transform: translateY(-2px);
         }
 
+        .debug-info {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
         .loading {
             text-align: center;
             padding: 40px;
@@ -604,6 +613,8 @@
                         </div>
                     </div>
 
+                    <div id="debugInfo" class="debug-info" style="display: none;"></div>
+
                     <div id="inventoryItems">
                         <p style="text-align: center; padding: 40px; color: #666;">Please select a unit to view inventory</p>
                     </div>
@@ -737,20 +748,31 @@
                 return;
             }
 
+            document.getElementById('inventoryItems').innerHTML = '<div class="loading">Loading inventory...</div>';
+
             const docRef = doc(db, 'inventory', unitId);
             const docSnap = await getDoc(docRef);
 
             if (docSnap.exists()) {
                 window.currentInventory = docSnap.data();
+                console.log('Loaded existing inventory:', window.currentInventory);
             } else {
+                console.log('Creating new default inventory for unit:', unitId);
                 window.currentInventory = getDefaultInventory();
                 await setDoc(docRef, window.currentInventory);
+                console.log('Saved default inventory to Firebase');
             }
+
+            // Debug info
+            const debugDiv = document.getElementById('debugInfo');
+            debugDiv.style.display = 'block';
+            debugDiv.innerHTML = `<strong>Debug:</strong> Loaded ${window.currentInventory.sections?.length || 0} sections`;
 
             renderInventory();
         };
 
         function getDefaultInventory() {
+            console.log('Creating default inventory with ALL 7 sections');
             return {
                 sections: [
                     {
@@ -807,7 +829,7 @@
                                     { id: 'scraper', name: 'Stove Razor Scraper Tool', location: '', imageUrl: '' },
                                     { id: 'trash_bags', name: 'Kitchen Trash Bags', location: '', imageUrl: '' },
                                     { id: 'cooking_gloves', name: 'Kitchen Cooking Gloves', location: '', imageUrl: '' },
-                                    { id: 'hand_towels', name: 'Kitchen Cooking Hand Towels', location: '', imageUrl: '' },
+                                    { id: 'hand_towels_kitchen', name: 'Kitchen Cooking Hand Towels', location: '', imageUrl: '' },
                                     { id: 'soap_dispenser', name: 'Soap and Dish Dispenser', location: '', imageUrl: '' },
                                     { id: 'cooking_utensils', name: 'Kitchen Cooking Utensils', location: '', imageUrl: '' },
                                     { id: 'colander', name: 'Kitchen Colander / Pasta Drainer', location: '', imageUrl: '' }
@@ -902,12 +924,18 @@
             const container = document.getElementById('inventoryItems');
             container.innerHTML = '';
 
-            if (!window.currentInventory.sections) {
-                container.innerHTML = '<p style="text-align: center; padding: 40px; color: #666;">No inventory configured</p>';
+            console.log('Rendering inventory:', window.currentInventory);
+
+            if (!window.currentInventory.sections || window.currentInventory.sections.length === 0) {
+                container.innerHTML = '<p style="text-align: center; padding: 40px; color: #666;">No inventory sections found</p>';
                 return;
             }
 
+            console.log(`Rendering ${window.currentInventory.sections.length} sections`);
+
             window.currentInventory.sections.forEach((section, sectionIdx) => {
+                console.log(`Rendering section ${sectionIdx}: ${section.name}`);
+                
                 const sectionDiv = document.createElement('div');
                 sectionDiv.className = 'room-section';
 
@@ -922,9 +950,8 @@
                     const buttonsDiv = document.createElement('div');
                     buttonsDiv.className = 'room-header-buttons';
                     buttonsDiv.innerHTML = `
-                        <button class="btn-section" onclick="editSection(${sectionIdx})">✏️ Edit</button>
-                        <button class="btn-section" onclick="addRoom(${sectionIdx})">➕ Room</button>
-                        <button class="btn-section" onclick="deleteSection(${sectionIdx})">🗑️</button>
+                        <button class="btn-section" type="button" onclick="event.preventDefault(); addRoom(${sectionIdx})">➕ Room</button>
+                        <button class="btn-section" type="button" onclick="event.preventDefault(); deleteSection(${sectionIdx})">🗑️</button>
                     `;
                     headerDiv.appendChild(buttonsDiv);
                 }
@@ -944,8 +971,8 @@
                             const roomButtons = document.createElement('div');
                             roomButtons.className = 'room-header-buttons';
                             roomButtons.innerHTML = `
-                                <button class="btn-section" onclick="addItem(${sectionIdx}, ${roomIdx})">➕ Item</button>
-                                <button class="btn-section" onclick="deleteRoom(${sectionIdx}, ${roomIdx})">🗑️</button>
+                                <button class="btn-section" type="button" onclick="event.preventDefault(); addItem(${sectionIdx}, ${roomIdx})">➕ Item</button>
+                                <button class="btn-section" type="button" onclick="event.preventDefault(); deleteRoom(${sectionIdx}, ${roomIdx})">🗑️</button>
                             `;
                             roomHeaderDiv.appendChild(roomButtons);
                         }
@@ -955,7 +982,7 @@
                         const addItemDiv = document.createElement('div');
                         addItemDiv.style.padding = '10px 20px';
                         addItemDiv.style.background = '#f8f9fa';
-                        addItemDiv.innerHTML = `<button class="btn-section" onclick="addItem(${sectionIdx}, ${roomIdx})" style="background: #5cb85c; color: white;">➕ Add Item to ${section.name}</button>`;
+                        addItemDiv.innerHTML = `<button class="btn-section" type="button" onclick="event.preventDefault(); addItem(${sectionIdx}, ${roomIdx})" style="background: #5cb85c; color: white;">➕ Add Item to ${section.name}</button>`;
                         sectionDiv.appendChild(addItemDiv);
                     }
 
@@ -967,8 +994,8 @@
                             const adminControls = document.createElement('div');
                             adminControls.className = 'item-admin-controls';
                             adminControls.innerHTML = `
-                                <button class="btn-item-edit" onclick="editItem(${sectionIdx}, ${roomIdx}, ${itemIdx})">✏️</button>
-                                <button class="btn-item-delete" onclick="deleteItem(${sectionIdx}, ${roomIdx}, ${itemIdx})">🗑️</button>
+                                <button class="btn-item-edit" type="button" onclick="event.preventDefault(); editItem(${sectionIdx}, ${roomIdx}, ${itemIdx})">✏️</button>
+                                <button class="btn-item-delete" type="button" onclick="event.preventDefault(); deleteItem(${sectionIdx}, ${roomIdx}, ${itemIdx})">🗑️</button>
                             `;
                             itemDiv.appendChild(adminControls);
                         }
@@ -1044,6 +1071,8 @@
 
                 container.appendChild(sectionDiv);
             });
+
+            console.log('Finished rendering inventory');
 
             document.getElementById('addSectionBtn').style.display = window.adminModeActive ? 'block' : 'none';
         }
