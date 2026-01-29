@@ -13,7 +13,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1fc8c8 0%, #12a5a5 100%);
             padding: 20px;
             min-height: 100vh;
         }
@@ -28,7 +28,7 @@
         }
 
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1fc8c8 0%, #12a5a5 100%);
             color: white;
             padding: 30px 20px;
             text-align: center;
@@ -39,6 +39,11 @@
             font-size: 28px;
             margin-bottom: 10px;
             font-weight: 700;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.95;
         }
 
         .admin-btn {
@@ -57,7 +62,7 @@
 
         .admin-btn:hover {
             background: white;
-            color: #667eea;
+            color: #1fc8c8;
         }
 
         .nav-tabs {
@@ -81,8 +86,12 @@
 
         .nav-tab.active {
             background: white;
-            color: #667eea;
-            border-bottom: 3px solid #667eea;
+            color: #1fc8c8;
+            border-bottom: 3px solid #1fc8c8;
+        }
+
+        .nav-tab:hover {
+            background: #e9ecef;
         }
 
         .tab-content {
@@ -126,13 +135,13 @@
         }
 
         .auto-info {
-            background: #d1ecf1;
-            border-left: 4px solid #0c5460;
+            background: #d4f4f4;
+            border-left: 4px solid #1fc8c8;
             padding: 12px;
             margin-bottom: 15px;
             border-radius: 4px;
             font-size: 14px;
-            color: #0c5460;
+            color: #0a5858;
         }
 
         .room-section {
@@ -143,7 +152,7 @@
         }
 
         .room-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1fc8c8 0%, #12a5a5 100%);
             color: white;
             padding: 15px 20px;
             font-size: 18px;
@@ -151,7 +160,7 @@
         }
 
         .room-subheader {
-            background: #f093fb;
+            background: #5dd9d9;
             color: white;
             padding: 10px 20px;
             font-size: 16px;
@@ -222,6 +231,7 @@
             width: 20px;
             height: 20px;
             cursor: pointer;
+            accent-color: #1fc8c8;
         }
 
         .checkbox-label {
@@ -249,10 +259,15 @@
             margin-top: 10px;
         }
 
+        .notes-input:focus {
+            outline: none;
+            border-color: #1fc8c8;
+        }
+
         .submit-btn {
             width: 100%;
             padding: 18px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1fc8c8 0%, #12a5a5 100%);
             color: white;
             border: none;
             border-radius: 8px;
@@ -265,6 +280,11 @@
 
         .submit-btn:hover {
             transform: translateY(-2px);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
 
         .loading {
@@ -294,7 +314,7 @@
         }
 
         .admin-section h3 {
-            color: #667eea;
+            color: #1fc8c8;
             margin-bottom: 15px;
             font-size: 20px;
         }
@@ -320,7 +340,7 @@
 
         .btn-edit {
             padding: 6px 12px;
-            background: #667eea;
+            background: #1fc8c8;
             color: white;
             border: none;
             border-radius: 6px;
@@ -365,12 +385,51 @@
         }
 
         .report-card:hover {
-            border-color: #667eea;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+            border-color: #1fc8c8;
+            box-shadow: 0 4px 12px rgba(31, 200, 200, 0.2);
         }
 
         .report-card.has-issues {
             border-left: 5px solid #f45c43;
+        }
+
+        .access-denied {
+            padding: 40px;
+            text-align: center;
+        }
+
+        .access-form {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+
+        .access-form h2 {
+            color: #1fc8c8;
+            margin-bottom: 20px;
+        }
+
+        .access-form input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .access-form button {
+            width: 100%;
+            padding: 12px;
+            background: #1fc8c8;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
         }
 
         @media (max-width: 768px) {
@@ -388,65 +447,77 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🏠 Spring Sparrow Inventory System</h1>
+            <h1>🐦 Spring Sparrow Inventory System</h1>
+            <p>Property Management & Turnover Tracking</p>
             <button class="admin-btn" onclick="promptAdminAccess()">⚙️ Admin</button>
         </div>
 
-        <div class="nav-tabs" id="navTabs">
-            <button class="nav-tab active" onclick="switchTab('checklist')">📋 New Inspection</button>
-            <button class="nav-tab" onclick="switchTab('reports')">📊 Reports</button>
+        <div id="accessCheck" class="access-denied">
+            <div class="access-form">
+                <h2>🔐 Access Code Required</h2>
+                <p style="margin-bottom: 20px; color: #666;">Enter your access code to continue</p>
+                <input type="password" id="accessCodeInput" placeholder="Enter access code">
+                <button onclick="checkAccess()">Enter</button>
+            </div>
         </div>
 
-        <!-- Checklist Tab -->
-        <div id="checklist-tab" class="tab-content active">
-            <div class="form-section">
-                <div class="auto-info">
-                    📅 <strong>Today's Date:</strong> <span id="currentDate"></span><br>
-                    👥 <strong>Inspector:</strong> Vita Professional Cleaning Crew
-                </div>
+        <div id="mainApp" style="display: none;">
+            <div class="nav-tabs" id="navTabs">
+                <button class="nav-tab active" onclick="switchTab('checklist')">📋 New Inspection</button>
+                <button class="nav-tab" onclick="switchTab('reports')">📊 Reports</button>
+            </div>
 
-                <form id="inventoryForm">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="unitLocation">Unit Location:</label>
-                            <select id="unitLocation" required>
-                                <option value="">Select Unit...</option>
-                            </select>
+            <!-- Checklist Tab -->
+            <div id="checklist-tab" class="tab-content active">
+                <div class="form-section">
+                    <div class="auto-info">
+                        📅 <strong>Today's Date:</strong> <span id="currentDate"></span><br>
+                        👥 <strong>Inspector:</strong> Vita Professional Cleaning Crew
+                    </div>
+
+                    <form id="inventoryForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="unitLocation">Unit Location:</label>
+                                <select id="unitLocation" required>
+                                    <option value="">Select Unit...</option>
+                                </select>
+                            </div>
                         </div>
-                    </div>
 
-                    <div id="inventoryItems" class="loading">
-                        Loading inventory...
-                    </div>
+                        <div id="inventoryItems" class="loading">
+                            Loading inventory...
+                        </div>
 
-                    <button type="submit" class="submit-btn">📧 Submit Report</button>
-                </form>
-            </div>
-        </div>
-
-        <!-- Reports Tab -->
-        <div id="reports-tab" class="tab-content">
-            <div class="reports-container">
-                <h2>Inspection Reports</h2>
-                <div id="reportsList" class="loading">Loading reports...</div>
-            </div>
-        </div>
-
-        <!-- Admin Tab -->
-        <div id="admin-tab" class="tab-content">
-            <div class="admin-panel">
-                <h2>Admin Panel</h2>
-                
-                <div class="admin-section">
-                    <h3>📍 Unit Locations</h3>
-                    <ul class="admin-list" id="unitsList"></ul>
-                    <button class="btn-add" onclick="addUnit()">+ Add Unit</button>
+                        <button type="submit" class="submit-btn">📧 Submit Report</button>
+                    </form>
                 </div>
+            </div>
 
-                <div class="admin-section">
-                    <h3>📦 Sections & Items</h3>
-                    <ul class="admin-list" id="sectionsList"></ul>
-                    <button class="btn-add" onclick="addSection()">+ Add Section</button>
+            <!-- Reports Tab -->
+            <div id="reports-tab" class="tab-content">
+                <div class="reports-container">
+                    <h2>Inspection Reports</h2>
+                    <div id="reportsList" class="loading">Loading reports...</div>
+                </div>
+            </div>
+
+            <!-- Admin Tab -->
+            <div id="admin-tab" class="tab-content">
+                <div class="admin-panel">
+                    <h2>Admin Panel</h2>
+                    
+                    <div class="admin-section">
+                        <h3>📍 Unit Locations</h3>
+                        <ul class="admin-list" id="unitsList"></ul>
+                        <button class="btn-add" onclick="addUnit()">+ Add Unit</button>
+                    </div>
+
+                    <div class="admin-section">
+                        <h3>📦 Sections & Items</h3>
+                        <ul class="admin-list" id="sectionsList"></ul>
+                        <button class="btn-add" onclick="addSection()">+ Add Section</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -469,22 +540,45 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Global state
         window.db = db;
         window.isAdmin = false;
+        window.isAuthenticated = false;
         window.currentUnits = [];
         window.currentSections = [];
 
-        // Display current date
-        const today = new Date();
-        document.getElementById('currentDate').textContent = today.toLocaleDateString('en-US', {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
+        // Check access code
+        window.checkAccess = function() {
+            const code = document.getElementById('accessCodeInput').value;
+            if (code === 'Vita3046' || code === '2008') {
+                window.isAuthenticated = true;
+                if (code === '2008') {
+                    window.isAdmin = true;
+                }
+                document.getElementById('accessCheck').style.display = 'none';
+                document.getElementById('mainApp').style.display = 'block';
+                startApp();
+            } else {
+                alert('❌ Invalid access code');
+            }
+        };
+
+        // Allow Enter key on access code input
+        document.getElementById('accessCodeInput')?.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') checkAccess();
         });
 
-        // Initialize app
+        // Display current date
+        const today = new Date();
+        const dateElement = document.getElementById('currentDate');
+        if (dateElement) {
+            dateElement.textContent = today.toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
         async function startApp() {
             try {
                 await loadUnits();
@@ -501,7 +595,6 @@
             }
         }
 
-        // Load units from Firebase
         async function loadUnits() {
             const unitsSnapshot = await getDocs(collection(db, 'units'));
             window.currentUnits = [];
@@ -509,7 +602,6 @@
                 window.currentUnits.push({ id: doc.id, ...doc.data() });
             });
 
-            // Initialize default units if none exist
             if (window.currentUnits.length === 0) {
                 const defaultUnits = [
                     { name: "Robin's Roost - 1617 Sheridan - Unit A" },
@@ -526,7 +618,6 @@
             renderUnitDropdown();
         }
 
-        // Load sections from Firebase
         async function loadSections() {
             const sectionsSnapshot = await getDocs(collection(db, 'sections'));
             window.currentSections = [];
@@ -534,13 +625,11 @@
                 window.currentSections.push({ id: doc.id, ...doc.data() });
             });
 
-            // Initialize default data if none exists
             if (window.currentSections.length === 0) {
                 await initializeDefaultData();
             }
         }
 
-        // Initialize default inventory data
         async function initializeDefaultData() {
             const defaultData = {
                 name: "Electronics and Appliances",
@@ -580,9 +669,10 @@
             window.currentSections.push({ id: docRef.id, ...defaultData });
         }
 
-        // Render unit dropdown
         function renderUnitDropdown() {
             const select = document.getElementById('unitLocation');
+            if (!select) return;
+            
             select.innerHTML = '<option value="">Select Unit...</option>';
             window.currentUnits.forEach(unit => {
                 const option = document.createElement('option');
@@ -592,9 +682,10 @@
             });
         }
 
-        // Render checklist
         function renderChecklist() {
             const container = document.getElementById('inventoryItems');
+            if (!container) return;
+            
             container.innerHTML = '';
 
             window.currentSections.forEach(section => {
@@ -621,6 +712,7 @@
                             img.className = 'item-image';
                             img.src = item.imageUrl;
                             img.alt = item.name;
+                            img.onerror = function() { this.style.display = 'none'; };
                             itemRow.appendChild(img);
                         }
 
@@ -655,8 +747,7 @@
             });
         }
 
-        // Form submission
-        document.getElementById('inventoryForm').addEventListener('submit', async function(e) {
+        document.getElementById('inventoryForm')?.addEventListener('submit', async function(e) {
             e.preventDefault();
 
             const formData = new FormData(e.target);
@@ -671,7 +762,6 @@
                 items: []
             };
 
-            // Collect all item data
             window.currentSections.forEach(section => {
                 section.rooms?.forEach(room => {
                     room.items?.forEach((item, idx) => {
@@ -700,23 +790,29 @@
             }
         });
 
-        // Admin access
         window.promptAdminAccess = function() {
-            const passcode = prompt('Enter admin passcode:');
-            if (passcode === '2008') {
-                window.isAdmin = true;
+            if (window.isAdmin) {
                 showAdminPanel();
-            } else if (passcode) {
-                alert('Incorrect passcode');
+            } else {
+                const passcode = prompt('Enter admin passcode:');
+                if (passcode === '2008') {
+                    window.isAdmin = true;
+                    showAdminPanel();
+                } else if (passcode) {
+                    alert('❌ Incorrect admin passcode');
+                }
             }
         };
 
         function showAdminPanel() {
-            const adminTab = document.createElement('button');
-            adminTab.className = 'nav-tab';
-            adminTab.textContent = '⚙️ Admin';
-            adminTab.onclick = () => switchTab('admin');
-            document.getElementById('navTabs').appendChild(adminTab);
+            let adminTab = document.querySelector('.nav-tab[onclick*="admin"]');
+            if (!adminTab) {
+                adminTab = document.createElement('button');
+                adminTab.className = 'nav-tab';
+                adminTab.textContent = '⚙️ Admin';
+                adminTab.onclick = () => switchTab('admin');
+                document.getElementById('navTabs').appendChild(adminTab);
+            }
             
             switchTab('admin');
             renderAdminPanel();
@@ -724,37 +820,40 @@
 
         function renderAdminPanel() {
             const unitsList = document.getElementById('unitsList');
-            unitsList.innerHTML = '';
-            window.currentUnits.forEach(unit => {
-                const li = document.createElement('li');
-                li.className = 'admin-list-item';
-                li.innerHTML = `
-                    <span>${unit.name}</span>
-                    <div class="admin-btn-group">
-                        <button class="btn-delete" onclick="deleteUnit('${unit.id}')">Delete</button>
-                    </div>
-                `;
-                unitsList.appendChild(li);
-            });
+            if (unitsList) {
+                unitsList.innerHTML = '';
+                window.currentUnits.forEach(unit => {
+                    const li = document.createElement('li');
+                    li.className = 'admin-list-item';
+                    li.innerHTML = `
+                        <span>${unit.name}</span>
+                        <div class="admin-btn-group">
+                            <button class="btn-delete" onclick="deleteUnit('${unit.id}')">Delete</button>
+                        </div>
+                    `;
+                    unitsList.appendChild(li);
+                });
+            }
 
             const sectionsList = document.getElementById('sectionsList');
-            sectionsList.innerHTML = '';
-            window.currentSections.forEach(section => {
-                const li = document.createElement('li');
-                li.className = 'admin-list-item';
-                li.innerHTML = `
-                    <span>${section.name} (${section.rooms?.length || 0} rooms)</span>
-                `;
-                sectionsList.appendChild(li);
-            });
+            if (sectionsList) {
+                sectionsList.innerHTML = '';
+                window.currentSections.forEach(section => {
+                    const li = document.createElement('li');
+                    li.className = 'admin-list-item';
+                    li.innerHTML = `
+                        <span>${section.name} (${section.rooms?.length || 0} rooms)</span>
+                    `;
+                    sectionsList.appendChild(li);
+                });
+            }
         }
 
-        // Tab switching
         window.switchTab = function(tabName) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
             
-            document.getElementById(`${tabName}-tab`).classList.add('active');
+            document.getElementById(`${tabName}-tab`)?.classList.add('active');
             event.target.classList.add('active');
 
             if (tabName === 'reports') {
@@ -762,9 +861,10 @@
             }
         };
 
-        // Load reports
         async function loadReports() {
             const reportsList = document.getElementById('reportsList');
+            if (!reportsList) return;
+            
             reportsList.innerHTML = '<div class="loading">Loading reports...</div>';
 
             try {
@@ -802,7 +902,6 @@
             }
         }
 
-        // Admin functions
         window.addUnit = function() {
             const name = prompt('Enter unit name:');
             if (name) {
@@ -823,9 +922,6 @@
         window.addSection = function() {
             alert('Section management coming soon!');
         };
-
-        // Start the app
-        startApp();
     </script>
 </body>
 </html>
