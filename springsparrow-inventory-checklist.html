@@ -99,7 +99,7 @@
 
         .form-row {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
             gap: 15px;
             margin-bottom: 20px;
         }
@@ -117,13 +117,22 @@
             color: #333;
         }
 
-        .form-group input,
         .form-group select {
             width: 100%;
             padding: 12px;
             border: 2px solid #ddd;
             border-radius: 8px;
             font-size: 16px;
+        }
+
+        .auto-info {
+            background: #d1ecf1;
+            border-left: 4px solid #0c5460;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #0c5460;
         }
 
         .room-section {
@@ -264,6 +273,15 @@
             color: #666;
         }
 
+        .error {
+            background: #f8d7da;
+            border-left: 4px solid #721c24;
+            padding: 15px;
+            margin: 20px;
+            border-radius: 4px;
+            color: #721c24;
+        }
+
         .admin-panel {
             padding: 20px;
         }
@@ -332,52 +350,6 @@
             margin-top: 15px;
         }
 
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.7);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .modal.show {
-            display: flex;
-        }
-
-        .modal-content {
-            background: white;
-            border-radius: 16px;
-            max-width: 600px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-        }
-
-        .modal-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 16px 16px 0 0;
-        }
-
-        .modal-body {
-            padding: 20px;
-        }
-
-        .modal-footer {
-            padding: 20px;
-            display: flex;
-            gap: 10px;
-            justify-content: flex-end;
-        }
-
         .reports-container {
             padding: 20px;
         }
@@ -402,10 +374,6 @@
         }
 
         @media (max-width: 768px) {
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-
             .item-row {
                 flex-direction: column;
                 align-items: flex-start;
@@ -432,24 +400,18 @@
         <!-- Checklist Tab -->
         <div id="checklist-tab" class="tab-content active">
             <div class="form-section">
+                <div class="auto-info">
+                    📅 <strong>Today's Date:</strong> <span id="currentDate"></span><br>
+                    👥 <strong>Inspector:</strong> Vita Professional Cleaning Crew
+                </div>
+
                 <form id="inventoryForm">
                     <div class="form-row">
-                        <div class="form-group">
-                            <label for="inspectionDate">Inspection Date:</label>
-                            <input type="date" id="inspectionDate" required>
-                        </div>
                         <div class="form-group">
                             <label for="unitLocation">Unit Location:</label>
                             <select id="unitLocation" required>
                                 <option value="">Select Unit...</option>
                             </select>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="inspectorName">Inspector Name:</label>
-                            <input type="text" id="inspectorName" placeholder="Full Name" required>
                         </div>
                     </div>
 
@@ -470,7 +432,7 @@
             </div>
         </div>
 
-        <!-- Admin Tab (Hidden by default) -->
+        <!-- Admin Tab -->
         <div id="admin-tab" class="tab-content">
             <div class="admin-panel">
                 <h2>Admin Panel</h2>
@@ -490,23 +452,9 @@
         </div>
     </div>
 
-    <!-- Modals -->
-    <div id="adminModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="modalTitle">Admin</h2>
-            </div>
-            <div class="modal-body" id="modalBody"></div>
-            <div class="modal-footer">
-                <button class="btn-edit" onclick="closeModal()">Cancel</button>
-                <button class="btn-add" onclick="saveModalData()">Save</button>
-            </div>
-        </div>
-    </div>
-
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, doc, setDoc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyC6W83NZRYljB8YrLHGRvDtDBoU_vCBao0",
@@ -527,12 +475,30 @@
         window.currentUnits = [];
         window.currentSections = [];
 
+        // Display current date
+        const today = new Date();
+        document.getElementById('currentDate').textContent = today.toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+
         // Initialize app
-        async function initializeApp() {
-            await loadUnits();
-            await loadSections();
-            renderChecklist();
-            document.getElementById('inspectionDate').valueAsDate = new Date();
+        async function startApp() {
+            try {
+                await loadUnits();
+                await loadSections();
+                renderChecklist();
+            } catch (error) {
+                console.error('Initialization error:', error);
+                document.getElementById('inventoryItems').innerHTML = `
+                    <div class="error">
+                        <strong>Error loading inventory:</strong> ${error.message}<br>
+                        Please check Firebase setup and try again.
+                    </div>
+                `;
+            }
         }
 
         // Load units from Firebase
@@ -694,11 +660,13 @@
             e.preventDefault();
 
             const formData = new FormData(e.target);
+            const unitSelect = document.getElementById('unitLocation');
+            
             const report = {
-                date: document.getElementById('inspectionDate').value,
-                unit: document.getElementById('unitLocation').value,
-                unitName: document.getElementById('unitLocation').selectedOptions[0].text,
-                inspector: document.getElementById('inspectorName').value,
+                date: new Date().toISOString().split('T')[0],
+                unit: unitSelect.value,
+                unitName: unitSelect.selectedOptions[0].text,
+                inspector: "Vita Professional Cleaning Crew",
                 timestamp: new Date().toISOString(),
                 items: []
             };
@@ -723,12 +691,13 @@
                 });
             });
 
-            // Save to Firebase
-            await addDoc(collection(db, 'reports'), report);
-
-            alert('✅ Report submitted successfully!');
-            e.target.reset();
-            document.getElementById('inspectionDate').valueAsDate = new Date();
+            try {
+                await addDoc(collection(db, 'reports'), report);
+                alert('✅ Report submitted successfully!');
+                e.target.reset();
+            } catch (error) {
+                alert('❌ Error submitting report: ' + error.message);
+            }
         });
 
         // Admin access
@@ -754,7 +723,6 @@
         }
 
         function renderAdminPanel() {
-            // Render units list
             const unitsList = document.getElementById('unitsList');
             unitsList.innerHTML = '';
             window.currentUnits.forEach(unit => {
@@ -763,14 +731,12 @@
                 li.innerHTML = `
                     <span>${unit.name}</span>
                     <div class="admin-btn-group">
-                        <button class="btn-edit" onclick="editUnit('${unit.id}')">Edit</button>
                         <button class="btn-delete" onclick="deleteUnit('${unit.id}')">Delete</button>
                     </div>
                 `;
                 unitsList.appendChild(li);
             });
 
-            // Render sections list
             const sectionsList = document.getElementById('sectionsList');
             sectionsList.innerHTML = '';
             window.currentSections.forEach(section => {
@@ -778,10 +744,6 @@
                 li.className = 'admin-list-item';
                 li.innerHTML = `
                     <span>${section.name} (${section.rooms?.length || 0} rooms)</span>
-                    <div class="admin-btn-group">
-                        <button class="btn-edit" onclick="editSection('${section.id}')">Edit</button>
-                        <button class="btn-delete" onclick="deleteSection('${section.id}')">Delete</button>
-                    </div>
                 `;
                 sectionsList.appendChild(li);
             });
@@ -800,54 +762,52 @@
             }
         };
 
-        // Load and render reports
+        // Load reports
         async function loadReports() {
             const reportsList = document.getElementById('reportsList');
             reportsList.innerHTML = '<div class="loading">Loading reports...</div>';
 
-            const reportsSnapshot = await getDocs(collection(db, 'reports'));
-            const reports = [];
-            reportsSnapshot.forEach(doc => {
-                reports.push({ id: doc.id, ...doc.data() });
-            });
+            try {
+                const reportsSnapshot = await getDocs(collection(db, 'reports'));
+                const reports = [];
+                reportsSnapshot.forEach(doc => {
+                    reports.push({ id: doc.id, ...doc.data() });
+                });
 
-            reports.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+                reports.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
-            if (reports.length === 0) {
-                reportsList.innerHTML = '<p>No reports yet.</p>';
-                return;
+                if (reports.length === 0) {
+                    reportsList.innerHTML = '<p>No reports yet.</p>';
+                    return;
+                }
+
+                reportsList.innerHTML = '';
+                reports.forEach(report => {
+                    const missingCount = report.items.filter(i => i.status === 'no').length;
+                    const damagedCount = report.items.filter(i => i.damaged).length;
+                    const hasIssues = missingCount > 0 || damagedCount > 0;
+
+                    const card = document.createElement('div');
+                    card.className = `report-card ${hasIssues ? 'has-issues' : ''}`;
+                    card.innerHTML = `
+                        <h3>${report.unitName}</h3>
+                        <p><strong>Date:</strong> ${report.date}</p>
+                        <p><strong>Inspector:</strong> ${report.inspector}</p>
+                        <p><strong>Status:</strong> ${hasIssues ? `⚠️ ${missingCount} missing, ${damagedCount} damaged` : '✅ All Clear'}</p>
+                    `;
+                    reportsList.appendChild(card);
+                });
+            } catch (error) {
+                reportsList.innerHTML = `<div class="error">Error loading reports: ${error.message}</div>`;
             }
-
-            reportsList.innerHTML = '';
-            reports.forEach(report => {
-                const missingCount = report.items.filter(i => i.status === 'no').length;
-                const damagedCount = report.items.filter(i => i.damaged).length;
-                const hasIssues = missingCount > 0 || damagedCount > 0;
-
-                const card = document.createElement('div');
-                card.className = `report-card ${hasIssues ? 'has-issues' : ''}`;
-                card.innerHTML = `
-                    <h3>${report.unitName}</h3>
-                    <p><strong>Date:</strong> ${report.date}</p>
-                    <p><strong>Inspector:</strong> ${report.inspector}</p>
-                    <p><strong>Status:</strong> ${hasIssues ? `⚠️ ${missingCount} missing, ${damagedCount} damaged` : '✅ All Clear'}</p>
-                `;
-                reportsList.appendChild(card);
-            });
         }
 
-        // Modal functions
-        window.closeModal = function() {
-            document.getElementById('adminModal').classList.remove('show');
-        };
-
-        // Placeholder admin functions (to be implemented)
+        // Admin functions
         window.addUnit = function() {
             const name = prompt('Enter unit name:');
             if (name) {
                 addDoc(collection(db, 'units'), { name }).then(() => {
-                    loadUnits();
-                    renderAdminPanel();
+                    loadUnits().then(renderAdminPanel);
                 });
             }
         };
@@ -855,8 +815,7 @@
         window.deleteUnit = function(id) {
             if (confirm('Delete this unit?')) {
                 deleteDoc(doc(db, 'units', id)).then(() => {
-                    loadUnits();
-                    renderAdminPanel();
+                    loadUnits().then(renderAdminPanel);
                 });
             }
         };
@@ -865,8 +824,8 @@
             alert('Section management coming soon!');
         };
 
-        // Initialize on load
-        initializeApp();
+        // Start the app
+        startApp();
     </script>
 </body>
 </html>
