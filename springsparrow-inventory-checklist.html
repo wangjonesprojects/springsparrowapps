@@ -13,7 +13,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #1fc8c8 0%, #12a5a5 100%);
+            background: #f5f5f7;
             padding: 20px;
             min-height: 100vh;
         }
@@ -23,7 +23,7 @@
             margin: 0 auto;
             background: white;
             border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
             overflow: hidden;
         }
 
@@ -245,9 +245,10 @@
             align-items: center;
             justify-content: center;
             color: #999;
-            font-size: 12px;
+            font-size: 11px;
             text-align: center;
             cursor: pointer;
+            padding: 5px;
         }
 
         .item-image-placeholder:hover {
@@ -372,19 +373,6 @@
             text-align: center;
         }
 
-        .add-item-btn {
-            width: 100%;
-            padding: 12px;
-            background: #5cb85c;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            margin: 10px 0;
-        }
-
         .add-section-btn {
             width: 100%;
             padding: 16px;
@@ -422,15 +410,6 @@
             color: #666;
         }
 
-        .error {
-            background: #f8d7da;
-            border-left: 4px solid #721c24;
-            padding: 15px;
-            margin: 20px;
-            border-radius: 4px;
-            color: #721c24;
-        }
-
         .access-denied {
             padding: 40px;
             text-align: center;
@@ -440,8 +419,9 @@
             max-width: 400px;
             margin: 0 auto;
             padding: 30px;
-            background: #f8f9fa;
+            background: white;
             border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
         }
 
         .access-form h2 {
@@ -470,7 +450,6 @@
             cursor: pointer;
         }
 
-        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -575,12 +554,7 @@
         }
 
         @media (max-width: 768px) {
-            .item-row {
-                flex-direction: row;
-            }
-
             .controls {
-                width: 100%;
                 flex-direction: column;
                 align-items: flex-start;
             }
@@ -638,13 +612,12 @@
                         ➕ Add New Section
                     </button>
 
-                    <button type="submit" class="submit-btn" id="submitBtn">📧 Submit Report</button>
+                    <button type="submit" class="submit-btn">📧 Submit Report</button>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- Edit Item Modal -->
     <div id="editModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -770,7 +743,6 @@
             if (docSnap.exists()) {
                 window.currentInventory = docSnap.data();
             } else {
-                // Initialize default inventory for this unit
                 window.currentInventory = getDefaultInventory();
                 await setDoc(docRef, window.currentInventory);
             }
@@ -783,7 +755,7 @@
                 sections: [
                     {
                         id: 'electronics',
-                        name: 'Electronics and Appliances',
+                        name: '📱 Electronics and Appliances',
                         type: 'checklist',
                         rooms: [
                             {
@@ -802,6 +774,123 @@
                                     { id: 'radiator_heater', name: 'DREO Radiator Heater', location: 'Living Room Corner', imageUrl: '' },
                                     { id: 'cylinder_heater', name: 'Dreo Cylinder Heater', location: 'Living Room', imageUrl: '' }
                                 ]
+                            },
+                            {
+                                name: 'Bedroom',
+                                items: [
+                                    { id: 'sound_machine', name: 'Rectangle Sound Noise Wood Machine', location: 'Nightstand', imageUrl: '' },
+                                    { id: 'electric_blanket', name: 'Electric Blanket', location: 'Bedroom Closet', imageUrl: '' }
+                                ]
+                            },
+                            {
+                                name: 'Bathroom',
+                                items: [
+                                    { id: 'towel_warmer', name: 'Towel Warmer', location: 'Bathroom Wall', imageUrl: '' },
+                                    { id: 'hair_dryer', name: 'Hair Dryer', location: 'Under Sink', imageUrl: '' },
+                                    { id: 'voltage_converter', name: 'Electrical Voltage Converter', location: 'Bathroom Cabinet', imageUrl: '' }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        id: 'kitchen_dining',
+                        name: '🍳 Kitchen & Dining Essentials',
+                        type: 'checklist',
+                        rooms: [
+                            {
+                                name: 'All Items',
+                                items: [
+                                    { id: 'dishes', name: 'Dishes Plate Count (All Present)', location: '', imageUrl: '' },
+                                    { id: 'glasses', name: 'Glasses Count (All Present)', location: '', imageUrl: '' },
+                                    { id: 'silverware', name: 'Silverware (All Present)', location: '', imageUrl: '' },
+                                    { id: 'pots_pans', name: 'Pots and Pans', location: '', imageUrl: '' },
+                                    { id: 'scraper', name: 'Stove Razor Scraper Tool', location: '', imageUrl: '' },
+                                    { id: 'trash_bags', name: 'Kitchen Trash Bags', location: '', imageUrl: '' },
+                                    { id: 'cooking_gloves', name: 'Kitchen Cooking Gloves', location: '', imageUrl: '' },
+                                    { id: 'hand_towels', name: 'Kitchen Cooking Hand Towels', location: '', imageUrl: '' },
+                                    { id: 'soap_dispenser', name: 'Soap and Dish Dispenser', location: '', imageUrl: '' },
+                                    { id: 'cooking_utensils', name: 'Kitchen Cooking Utensils', location: '', imageUrl: '' },
+                                    { id: 'colander', name: 'Kitchen Colander / Pasta Drainer', location: '', imageUrl: '' }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        id: 'bedroom_essentials',
+                        name: '🛏️ Bedroom Essentials - Linens',
+                        type: 'checklist',
+                        rooms: [
+                            {
+                                name: 'All Items',
+                                items: [
+                                    { id: 'sheets', name: 'Bed Sheets Set', location: '', imageUrl: '' },
+                                    { id: 'pillows', name: 'Pillows', location: '', imageUrl: '' },
+                                    { id: 'pillowcases', name: 'Pillowcases', location: '', imageUrl: '' },
+                                    { id: 'duvet', name: 'Duvet/Comforter', location: '', imageUrl: '' },
+                                    { id: 'blankets', name: 'Blankets (Extra)', location: '', imageUrl: '' }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        id: 'bathroom_essentials',
+                        name: '🛁 Bathroom Essentials',
+                        type: 'checklist',
+                        rooms: [
+                            {
+                                name: 'All Items',
+                                items: [
+                                    { id: 'bath_towels', name: 'Bath Towels', location: '', imageUrl: '' },
+                                    { id: 'hand_towels_bath', name: 'Hand Towels', location: '', imageUrl: '' },
+                                    { id: 'washcloths', name: 'Washcloths', location: '', imageUrl: '' },
+                                    { id: 'bath_mat', name: 'Bath Mat', location: '', imageUrl: '' }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        id: 'restock_bathroom',
+                        name: '🧴 Restocking - Bathroom Essentials',
+                        type: 'restock',
+                        rooms: [
+                            {
+                                name: 'All Items',
+                                items: [
+                                    { id: 'shampoo', name: 'Shampoo', location: '', imageUrl: '' },
+                                    { id: 'conditioner', name: 'Conditioner', location: '', imageUrl: '' },
+                                    { id: 'body_wash', name: 'Body Wash / Soap', location: '', imageUrl: '' },
+                                    { id: 'hand_soap_bath', name: 'Hand Soap', location: '', imageUrl: '' }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        id: 'restock_kitchen',
+                        name: '🧽 Restocking - Kitchen Essentials',
+                        type: 'restock',
+                        rooms: [
+                            {
+                                name: 'All Items',
+                                items: [
+                                    { id: 'dishwasher_pods', name: 'Dishwasher Pods', location: '', imageUrl: '' },
+                                    { id: 'dish_soap', name: 'Dish Soap / Detergent', location: '', imageUrl: '' },
+                                    { id: 'hand_soap_kitchen', name: 'Hand Washing Soap', location: '', imageUrl: '' }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        id: 'restock_amenities',
+                        name: '🍷 Restocking - Guest Amenities',
+                        type: 'restock',
+                        rooms: [
+                            {
+                                name: 'All Items',
+                                items: [
+                                    { id: 'wine', name: 'Wine (Welcome Bottle)', location: '', imageUrl: '' },
+                                    { id: 'water_bottles', name: 'Water Bottles', location: '', imageUrl: '' },
+                                    { id: 'guest_snacks', name: 'Guest Snacks', location: '', imageUrl: '' }
+                                ]
                             }
                         ]
                     }
@@ -814,7 +903,7 @@
             container.innerHTML = '';
 
             if (!window.currentInventory.sections) {
-                container.innerHTML = '<p style="text-align: center; padding: 40px; color: #666;">No inventory configured for this unit</p>';
+                container.innerHTML = '<p style="text-align: center; padding: 40px; color: #666;">No inventory configured</p>';
                 return;
             }
 
@@ -834,8 +923,8 @@
                     buttonsDiv.className = 'room-header-buttons';
                     buttonsDiv.innerHTML = `
                         <button class="btn-section" onclick="editSection(${sectionIdx})">✏️ Edit</button>
-                        <button class="btn-section" onclick="addRoom(${sectionIdx})">➕ Add Room</button>
-                        <button class="btn-section" onclick="deleteSection(${sectionIdx})">🗑️ Delete</button>
+                        <button class="btn-section" onclick="addRoom(${sectionIdx})">➕ Room</button>
+                        <button class="btn-section" onclick="deleteSection(${sectionIdx})">🗑️</button>
                     `;
                     headerDiv.appendChild(buttonsDiv);
                 }
@@ -843,24 +932,32 @@
                 sectionDiv.appendChild(headerDiv);
 
                 section.rooms?.forEach((room, roomIdx) => {
-                    const roomHeaderDiv = document.createElement('div');
-                    roomHeaderDiv.className = 'room-subheader';
-                    
-                    const roomText = document.createElement('span');
-                    roomText.textContent = room.name;
-                    roomHeaderDiv.appendChild(roomText);
+                    if (section.rooms.length > 1 || room.name !== 'All Items') {
+                        const roomHeaderDiv = document.createElement('div');
+                        roomHeaderDiv.className = 'room-subheader';
+                        
+                        const roomText = document.createElement('span');
+                        roomText.textContent = room.name;
+                        roomHeaderDiv.appendChild(roomText);
 
-                    if (window.adminModeActive) {
-                        const roomButtons = document.createElement('div');
-                        roomButtons.className = 'room-header-buttons';
-                        roomButtons.innerHTML = `
-                            <button class="btn-section" onclick="addItem(${sectionIdx}, ${roomIdx})">➕ Add Item</button>
-                            <button class="btn-section" onclick="deleteRoom(${sectionIdx}, ${roomIdx})">🗑️ Delete</button>
-                        `;
-                        roomHeaderDiv.appendChild(roomButtons);
+                        if (window.adminModeActive) {
+                            const roomButtons = document.createElement('div');
+                            roomButtons.className = 'room-header-buttons';
+                            roomButtons.innerHTML = `
+                                <button class="btn-section" onclick="addItem(${sectionIdx}, ${roomIdx})">➕ Item</button>
+                                <button class="btn-section" onclick="deleteRoom(${sectionIdx}, ${roomIdx})">🗑️</button>
+                            `;
+                            roomHeaderDiv.appendChild(roomButtons);
+                        }
+
+                        sectionDiv.appendChild(roomHeaderDiv);
+                    } else if (window.adminModeActive) {
+                        const addItemDiv = document.createElement('div');
+                        addItemDiv.style.padding = '10px 20px';
+                        addItemDiv.style.background = '#f8f9fa';
+                        addItemDiv.innerHTML = `<button class="btn-section" onclick="addItem(${sectionIdx}, ${roomIdx})" style="background: #5cb85c; color: white;">➕ Add Item to ${section.name}</button>`;
+                        sectionDiv.appendChild(addItemDiv);
                     }
-
-                    sectionDiv.appendChild(roomHeaderDiv);
 
                     room.items?.forEach((item, itemIdx) => {
                         const itemDiv = document.createElement('div');
@@ -886,7 +983,7 @@
                         } else {
                             const placeholder = document.createElement('div');
                             placeholder.className = 'item-image-placeholder';
-                            placeholder.textContent = window.adminModeActive ? 'Click to add image' : 'No image';
+                            placeholder.textContent = window.adminModeActive ? 'Click to add' : 'No image';
                             if (window.adminModeActive) {
                                 placeholder.onclick = () => editItem(sectionIdx, roomIdx, itemIdx);
                             }
@@ -895,24 +992,50 @@
 
                         const contentDiv = document.createElement('div');
                         contentDiv.className = 'item-content';
-                        contentDiv.innerHTML = `
-                            <div class="item-name">${item.name}</div>
-                            ${item.location ? `<div class="item-location">📍 ${item.location}</div>` : ''}
-                            <div class="controls">
-                                <div class="radio-group">
-                                    <label class="radio-label">
-                                        <input type="radio" name="${item.id}" value="yes" required> Yes
+
+                        if (section.type === 'restock') {
+                            contentDiv.innerHTML = `
+                                <div class="item-name">${item.name}</div>
+                                ${item.location ? `<div class="item-location">📍 ${item.location}</div>` : ''}
+                                <div class="controls">
+                                    <div class="stock-level">
+                                        <label class="stock-option full">
+                                            <input type="radio" name="${item.id}" value="full" required> Full
+                                        </label>
+                                        <label class="stock-option low">
+                                            <input type="radio" name="${item.id}" value="low"> Low
+                                        </label>
+                                        <label class="stock-option empty">
+                                            <input type="radio" name="${item.id}" value="empty"> Empty
+                                        </label>
+                                    </div>
+                                    <label class="checkbox-label" style="color: #1fc8c8;">
+                                        <input type="checkbox" name="${item.id}_restock"> Restock
                                     </label>
-                                    <label class="radio-label">
-                                        <input type="radio" name="${item.id}" value="no"> No
+                                    <input type="number" class="quantity-input" name="${item.id}_qty" placeholder="Qty" min="0">
+                                </div>
+                                <input type="text" class="notes-input" name="${item.id}_notes" placeholder="Notes (optional)">
+                            `;
+                        } else {
+                            contentDiv.innerHTML = `
+                                <div class="item-name">${item.name}</div>
+                                ${item.location ? `<div class="item-location">📍 ${item.location}</div>` : ''}
+                                <div class="controls">
+                                    <div class="radio-group">
+                                        <label class="radio-label">
+                                            <input type="radio" name="${item.id}" value="yes" required> Yes
+                                        </label>
+                                        <label class="radio-label">
+                                            <input type="radio" name="${item.id}" value="no"> No
+                                        </label>
+                                    </div>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="${item.id}_damage"> Damaged
                                     </label>
                                 </div>
-                                <label class="checkbox-label">
-                                    <input type="checkbox" name="${item.id}_damage"> Damaged
-                                </label>
-                            </div>
-                            <input type="text" class="notes-input" name="${item.id}_notes" placeholder="Notes (optional)">
-                        `;
+                                <input type="text" class="notes-input" name="${item.id}_notes" placeholder="Notes (optional)">
+                            `;
+                        }
 
                         itemDiv.appendChild(contentDiv);
                         sectionDiv.appendChild(itemDiv);
@@ -922,7 +1045,6 @@
                 container.appendChild(sectionDiv);
             });
 
-            // Show/hide add section button
             document.getElementById('addSectionBtn').style.display = window.adminModeActive ? 'block' : 'none';
         }
 
@@ -1022,6 +1144,10 @@
                 items: []
             };
 
+            if (!window.currentInventory.sections[sectionIdx].rooms) {
+                window.currentInventory.sections[sectionIdx].rooms = [];
+            }
+
             window.currentInventory.sections[sectionIdx].rooms.push(newRoom);
 
             const unitId = document.getElementById('unitLocation').value;
@@ -1030,15 +1156,42 @@
             });
         };
 
+        window.deleteRoom = async function(sectionIdx, roomIdx) {
+            if (!confirm('Delete this room?')) return;
+
+            window.currentInventory.sections[sectionIdx].rooms.splice(roomIdx, 1);
+
+            const unitId = document.getElementById('unitLocation').value;
+            await setDoc(doc(db, 'inventory', unitId), window.currentInventory);
+
+            renderInventory();
+        };
+
+        window.deleteSection = async function(sectionIdx) {
+            if (!confirm('Delete this entire section?')) return;
+
+            window.currentInventory.sections.splice(sectionIdx, 1);
+
+            const unitId = document.getElementById('unitLocation').value;
+            await setDoc(doc(db, 'inventory', unitId), window.currentInventory);
+
+            renderInventory();
+        };
+
         window.addNewSection = function() {
-            const name = prompt('Enter section name:');
+            const name = prompt('Enter section name (include emoji):');
             if (!name) return;
+
+            const type = confirm('Is this a restocking section? (OK = Yes, Cancel = No)') ? 'restock' : 'checklist';
 
             const newSection = {
                 id: 'section_' + Date.now(),
                 name: name,
-                type: 'checklist',
-                rooms: []
+                type: type,
+                rooms: [{
+                    name: 'All Items',
+                    items: []
+                }]
             };
 
             window.currentInventory.sections.push(newSection);
