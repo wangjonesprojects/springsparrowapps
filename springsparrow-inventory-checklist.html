@@ -159,6 +159,10 @@
             font-weight: 700;
         }
 
+        .room-header.restock {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
         .room-subheader {
             background: #5dd9d9;
             color: white;
@@ -173,20 +177,39 @@
             background: white;
             display: flex;
             gap: 15px;
-            align-items: center;
+            align-items: flex-start;
         }
 
         .item-row:nth-child(even) {
             background: #f8f9fa;
         }
 
+        .item-row:last-child {
+            border-bottom: none;
+        }
+
         .item-image {
-            width: 60px;
-            height: 60px;
+            width: 80px;
+            height: 80px;
             object-fit: contain;
             border-radius: 8px;
             border: 1px solid #ddd;
             flex-shrink: 0;
+            background: white;
+        }
+
+        .item-image-placeholder {
+            width: 80px;
+            height: 80px;
+            background: #f8f9fa;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 12px;
         }
 
         .item-content {
@@ -196,7 +219,7 @@
         .item-name {
             font-weight: 600;
             color: #333;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
             font-size: 16px;
         }
 
@@ -204,7 +227,7 @@
             font-size: 12px;
             color: #666;
             font-style: italic;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
 
         .controls {
@@ -212,6 +235,7 @@
             gap: 15px;
             flex-wrap: wrap;
             align-items: center;
+            margin-top: 8px;
         }
 
         .radio-group {
@@ -262,6 +286,48 @@
         .notes-input:focus {
             outline: none;
             border-color: #1fc8c8;
+        }
+
+        /* Restock specific styles */
+        .stock-level {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .stock-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .stock-option input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .stock-option.full {
+            color: #5cb85c;
+        }
+
+        .stock-option.low {
+            color: #f0ad4e;
+        }
+
+        .stock-option.empty {
+            color: #d9534f;
+        }
+
+        .quantity-input {
+            width: 80px;
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            text-align: center;
         }
 
         .submit-btn {
@@ -434,12 +500,18 @@
 
         @media (max-width: 768px) {
             .item-row {
-                flex-direction: column;
-                align-items: flex-start;
+                flex-direction: row;
             }
 
             .controls {
                 width: 100%;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .stock-level {
+                flex-direction: column;
+                align-items: flex-start;
             }
         }
     </style>
@@ -467,7 +539,6 @@
                 <button class="nav-tab" onclick="switchTab('reports')">📊 Reports</button>
             </div>
 
-            <!-- Checklist Tab -->
             <div id="checklist-tab" class="tab-content active">
                 <div class="form-section">
                     <div class="auto-info">
@@ -485,8 +556,983 @@
                             </div>
                         </div>
 
-                        <div id="inventoryItems" class="loading">
-                            Loading inventory...
+                        <div id="inventoryItems">
+                            <!-- ELECTRONICS SECTION -->
+                            <div class="room-section">
+                                <div class="room-header">📱 Electronics and Appliances</div>
+                                
+                                <!-- Kitchen -->
+                                <div class="room-subheader">Kitchen</div>
+                                <div class="item-row">
+                                    <div class="item-image-placeholder">No image</div>
+                                    <div class="item-content">
+                                        <div class="item-name">Alexa Speaker</div>
+                                        <div class="item-location">📍 Kitchen Counter</div>
+                                        <div class="controls">
+                                            <div class="radio-group">
+                                                <label class="radio-label">
+                                                    <input type="radio" name="alexa" value="yes" required> Yes
+                                                </label>
+                                                <label class="radio-label">
+                                                    <input type="radio" name="alexa" value="no"> No
+                                                </label>
+                                            </div>
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="alexa_damage"> Damaged
+                                            </label>
+                                        </div>
+                                        <input type="text" class="notes-input" name="alexa_notes" placeholder="Notes (optional)">
+                                    </div>
+                                </div>
+
+                                <div class="item-row">
+                                    <div class="item-image-placeholder">No image</div>
+                                    <div class="item-content">
+                                        <div class="item-name">Noise Monitor</div>
+                                        <div class="item-location">📍 Kitchen Wall</div>
+                                        <div class="controls">
+                                            <div class="radio-group">
+                                                <label class="radio-label">
+                                                    <input type="radio" name="noise_monitor" value="yes" required> Yes
+                                                </label>
+                                                <label class="radio-label">
+                                                    <input type="radio" name="noise_monitor" value="no"> No
+                                                </label>
+                                            </div>
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="noise_monitor_damage"> Damaged
+                                            </label>
+                                        </div>
+                                        <input type="text" class="notes-input" name="noise_monitor_notes" placeholder="Notes (optional)">
+                                    </div>
+                                </div>
+
+                                <div class="item-row">
+                                    <div class="item-image-placeholder">No image</div>
+                                    <div class="item-content">
+                                        <div class="item-name">Nespresso/Keurig Coffee Maker</div>
+                                        <div class="item-location">📍 Kitchen Counter</div>
+                                        <div class="controls">
+                                            <div class="radio-group">
+                                                <label class="radio-label">
+                                                    <input type="radio" name="coffee_maker" value="yes" required> Yes
+                                                </label>
+                                                <label class="radio-label">
+                                                    <input type="radio" name="coffee_maker" value="no"> No
+                                                </label>
+                                            </div>
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="coffee_maker_damage"> Damaged
+                                            </label>
+                                        </div>
+                                        <input type="text" class="notes-input" name="coffee_maker_notes" placeholder="Notes (optional)">
+                                    </div>
+                                </div>
+
+                                <div class="item-row">
+                                    <div class="item-image-placeholder">No image</div>
+                                    <div class="item-content">
+                                        <div class="item-name">Microwave</div>
+                                        <div class="item-location">📍 Kitchen Counter</div>
+                                        <div class="controls">
+                                            <div class="radio-group">
+                                                <label class="radio-label">
+                                                    <input type="radio" name="microwave" value="yes" required> Yes
+                                                </label>
+                                                <label class="radio-label">
+                                                    <input type="radio" name="microwave" value="no"> No
+                                                </label>
+                                            </div>
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="microwave_damage"> Damaged
+                                            </label>
+                                        </div>
+                                        <input type="text" class="notes-input" name="microwave_notes" placeholder="Notes (optional)">
+                                    </div>
+                                </div>
+
+                                <!-- Living Room -->
+                                <div class="room-subheader">Living Room</div>
+                                <div class="item-row">
+                                    <div class="item-image-placeholder">No image</div>
+                                    <div class="item-content">
+                                        <div class="item-name">Samsung TV Roku Device</div>
+                                        <div class="item-location">📍 TV Stand</div>
+                                        <div class="controls">
+                                            <div class="radio-group">
+                                                <label class="radio-label">
+                                                    <input type="radio" name="tv_roku" value="yes" required> Yes
+                                                </label>
+                                                <label class="radio-label">
+                                                    <input type="radio" name="tv_roku" value="no"> No
+                                                </label>
+                                            </div>
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="tv_roku_damage"> Damaged
+                                            </label>
+                                        </div>
+                                        <input type="text" class="notes-input" name="tv_roku_notes" placeholder="Notes (optional)">
+                                    </div>
+                                </div>
+
+                                <div class="item-row">
+                                    <div class="item-image-placeholder">No image</div>
+                                    <div class="item-content">
+                                        <div class="item-name">DREO Radiator Heater</div>
+                                        <div class="item-location">📍 Living Room Corner</div>
+                                        <div class="controls">
+                                            <div class="radio-group">
+                                                <label class="radio-label">
+                                                    <input type="radio" name="radiator_heater" value="yes" required> Yes
+                                                </label>
+                                                <label class="radio-label">
+                                                    <input type="radio" name="radiator_heater" value="no"> No
+                                                </label>
+                                            </div>
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="radiator_heater_damage"> Damaged
+                                            </label>
+                                        </div>
+                                        <input type="text" class="notes-input" name="radiator_heater_notes" placeholder="Notes (optional)">
+                                    </div>
+                                </div>
+
+                                <div class="item-row">
+                                    <div class="item-image-placeholder">No image</div>
+                                    <div class="item-content">
+                                        <div class="item-name">Dreo Cylinder Heater</div>
+                                        <div class="item-location">📍 Living Room</div>
+                                        <div class="controls">
+                                            <div class="radio-group">
+                                                <label class="radio-label">
+                                                    <input type="radio" name="cylinder_heater" value="yes" required> Yes
+                                                </label>
+                                                <label class="radio-label">
+                                                    <input type="radio" name="cylinder_heater" value="no"> No
+                                                </label>
+                                            </div>
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="cylinder_heater_damage"> Damaged
+                                            </label>
+                                        </div>
+                                        <input type="text" class="notes-input" name="cylinder_heater_notes" placeholder="Notes (optional)">
+                                    </div>
+                                </div>
+
+                                <!-- Bedroom -->
+                                <div class="room-subheader">Bedroom</div>
+                                <div class="item-row">
+                                    <div class="item-image-placeholder">No image</div>
+                                    <div class="item-content">
+                                        <div class="item-name">Rectangle Sound Noise Wood Machine</div>
+                                        <div class="item-location">📍 Nightstand</div>
+                                        <div class="controls">
+                                            <div class="radio-group">
+                                                <label class="radio-label">
+                                                    <input type="radio" name="sound_machine" value="yes" required> Yes
+                                                </label>
+                                                <label class="radio-label">
+                                                    <input type="radio" name="sound_machine" value="no"> No
+                                                </label>
+                                            </div>
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="sound_machine_damage"> Damaged
+                                            </label>
+                                        </div>
+                                        <input type="text" class="notes-input" name="sound_machine_notes" placeholder="Notes (optional)">
+                                    </div>
+                                </div>
+
+                                <div class="item-row">
+                                    <div class="item-image-placeholder">No image</div>
+                                    <div class="item-content">
+                                        <div class="item-name">Electric Blanket</div>
+                                        <div class="item-location">📍 Bedroom Closet</div>
+                                        <div class="controls">
+                                            <div class="radio-group">
+                                                <label class="radio-label">
+                                                    <input type="radio" name="electric_blanket" value="yes" required> Yes
+                                                </label>
+                                                <label class="radio-label">
+                                                    <input type="radio" name="electric_blanket" value="no"> No
+                                                </label>
+                                            </div>
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="electric_blanket_damage"> Damaged
+                                            </label>
+                                        </div>
+                                        <input type="text" class="notes-input" name="electric_blanket_notes" placeholder="Notes (optional)">
+                                    </div>
+                                </div>
+
+                                <!-- Bathroom -->
+                                <div class="room-subheader">Bathroom</div>
+                                <div class="item-row">
+                                    <div class="item-image-placeholder">No image</div>
+                                    <div class="item-content">
+                                        <div class="item-name">Towel Warmer</div>
+                                        <div class="item-location">📍 Bathroom Wall</div>
+                                        <div class="controls">
+                                            <div class="radio-group">
+                                                <label class="radio-label">
+                                                    <input type="radio" name="towel_warmer" value="yes" required> Yes
+                                                </label>
+                                                <label class="radio-label">
+                                                    <input type="radio" name="towel_warmer" value="no"> No
+                                                </label>
+                                            </div>
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="towel_warmer_damage"> Damaged
+                                            </label>
+                                        </div>
+                                        <input type="text" class="notes-input" name="towel_warmer_notes" placeholder="Notes (optional)">
+                                    </div>
+                                </div>
+
+                                <div class="item-row">
+                                    <div class="item-image-placeholder">No image</div>
+                                    <div class="item-content">
+                                        <div class="item-name">Hair Dryer</div>
+                                        <div class="item-location">📍 Under Sink</div>
+                                        <div class="controls">
+                                            <div class="radio-group">
+                                                <label class="radio-label">
+                                                    <input type="radio" name="hair_dryer" value="yes" required> Yes
+                                                </label>
+                                                <label class="radio-label">
+                                                    <input type="radio" name="hair_dryer" value="no"> No
+                                                </label>
+                                            </div>
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="hair_dryer_damage"> Damaged
+                                            </label>
+                                        </div>
+                                        <input type="text" class="notes-input" name="hair_dryer_notes" placeholder="Notes (optional)">
+                                    </div>
+                                </div>
+
+                                <div class="item-row">
+                                    <div class="item-image-placeholder">No image</div>
+                                    <div class="item-content">
+                                        <div class="item-name">Electrical Voltage Converter (EU Coffee Maker)</div>
+                                        <div class="item-location">📍 Bathroom Cabinet</div>
+                                        <div class="controls">
+                                            <div class="radio-group">
+                                                <label class="radio-label">
+                                                    <input type="radio" name="voltage_converter" value="yes" required> Yes
+                                                </label>
+                                                <label class="radio-label">
+                                                    <input type="radio" name="voltage_converter" value="no"> No
+                                                </label>
+                                            </div>
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="voltage_converter_damage"> Damaged
+                                            </label>
+                                        </div>
+                                        <input type="text" class="notes-input" name="voltage_converter_notes" placeholder="Notes (optional)">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- KITCHEN DINING ESSENTIALS -->
+                            <div class="room-section">
+                                <div class="room-header">🍳 Kitchen & Dining Essentials</div>
+                                
+                                <div class="item-row">
+                                    <div class="item-image-placeholder">No image</div>
+                                    <div class="item-content">
+                                        <div class="item-name">Dishes Plate Count (All Present)</div>
+                                        <div class="controls">
+                                            <div class="radio-group">
+                                                <label class="radio-label">
+                                                    <input type="radio" name="dishes" value="yes" required> Yes
+                                                </label>
+                                                <label class="radio-label">
+                                                    <input type="radio" name="dishes" value="no"> No
+                                                </label>
+                                            </div>
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="dishes_damage"> Damaged
+                                            </label>
+                                        </div>
+                                        <input type="text" class="notes-input" name="dishes_notes" placeholder="Notes (e.g., missing count)">
+                                    </div>
+                                </div>
+
+                                <div class="item-row">
+                                    <div class="item-image-placeholder">No image</div>
+                                    <div class="item-content">
+                                        <div class="item-name">Glasses Count (All Present)</div>
+                                        <div class="controls">
+                                            <div class="radio-group">
+                                                <label class="radio-label">
+                                                    <input type="radio" name="glasses" value="yes" required> Yes
+                                                </label>
+                                                <label class="radio-label">
+                                                    <input type="radio" name="glasses" value="no"> No
+                                                </label>
+                                            </div>
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="glasses_damage"> Damaged
+                                            </label>
+                                        </div>
+                                        <input type="text" class="notes-input" name="glasses_notes" placeholder="Notes (e.g., missing count)">
+                                    </div>
+                                </div>
+
+                                <div class="item-row">
+                                    <div class="item-image-placeholder">No image</div>
+                                    <div class="item-content">
+                                        <div class="item-name">Silverware (All Present)</div>
+                                        <div class="controls">
+                                            <div class="radio-group">
+                                                <label class="radio-label">
+                                                    <input type="radio" name="silverware" value="yes" required> Yes
+                                                </label>
+                                                <label class="radio-label">
+                                                    <input type="radio" name="silverware" value="no"> No
+                                                </label>
+                                            </div>
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="silverware_damage"> Damaged
+                                            </label>
+                                        </div>
+                                        <input type="text" class="notes-input" name="silverware_notes" placeholder="Notes (e.g., missing count)">
+                                    </div>
+                                </div>
+
+                                <div class="item-row">
+                                    <div class="item-image-placeholder">No image</div>
+                                    <div class="item-content">
+                                        <div class="item-name">Pots and Pans</div>
+                                        <div class="controls">
+                                            <div class="radio-group">
+                                                <label class="radio-label">
+                                                    <input type="radio" name="pots_pans" value="yes" required> Yes
+                                                </label>
+                                                <label class="radio-label">
+                                                    <input type="radio" name="pots_pans" value="no"> No
+                                                </label>
+                                            </div>
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="pots_pans_damage"> Damaged
+                                            </label>
+                                        </div>
+                                        <input type="text" class="notes-input" name="pots_pans_notes" placeholder="Notes (optional)">
+                                    </div>
+                                </div>
+
+                                <div class="item-row">
+                                    <div class="item-image-placeholder">No image</div>
+                                    <div class="item-content">
+                                        <div class="item-name">Stove Razor Scraper Tool</div>
+                                        <div class="controls">
+                                            <div class="radio-group">
+                                                <label class="radio-label">
+                                                    <input type="radio" name="scraper" value="yes" required> Yes
+                                                </label>
+                                                <label class="radio-label">
+                                                    <input type="radio" name="scraper" value="no"> No
+                                                </label>
+                                            </div>
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="scraper_damage"> Damaged
+                                            </label>
+                                        </div>
+                                        <input type="text" class="notes-input" name="scraper_notes" placeholder="Notes (optional)">
+                                    </div>
+                                </div>
+
+                                <div class="item-row">
+                                    <div class="item-image-placeholder">No image</div>
+                                    <div class="item-content">
+                                        <div class="item-name">Kitchen Trash Bags</div>
+                                        <div class="controls">
+                                            <div class="radio-group">
+                                                <label class="radio-label">
+                                                    <input type="radio" name="trash_bags" value="yes" required> Yes
+                                                </label>
+                                                <label class="radio-label">
+                                                    <input type="radio" name="trash_bags" value="no"> No
+                                                </label>
+                                            </div>
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="trash_bags_damage"> Damaged
+                                            </label>
+                                        </div>
+                                        <input type="text" class="notes-input" name="trash_bags_notes" placeholder="Notes (optional)">
+                                    </div>
+                                </div>
+
+                                <div class="item-row">
+                                    <div class="item-image-placeholder">No image</div>
+                                    <div class="item-content">
+                                        <div class="item-name">Kitchen Cooking Gloves</div>
+                                        <div class="controls">
+                                            <div class="radio-group">
+                                                <label class="radio-label">
+                                                    <input type="radio" name="cooking_gloves" value="yes" required> Yes
+                                                </label>
+                                                <label class="radio-label">
+                                                    <input type="radio" name="cooking_gloves" value="no"> No
+                                                </label>
+                                            </div>
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="cooking_gloves_damage"> Damaged
+                                            </label>
+                                        </div>
+                                        <input type="text" class="notes-input" name="cooking_gloves_notes" placeholder="Notes (optional)">
+                                    </div>
+                                </div>
+
+                                <div class="item-row">
+                                    <div class="item-image-placeholder">No image</div>
+                                    <div class="item-content">
+                                        <div class="item-name">Kitchen Cooking Hand Towels</div>
+                                        <div class="controls">
+                                            <div class="radio-group">
+                                                <label class="radio-label">
+                                                    <input type="radio" name="hand_towels" value="yes" required> Yes
+                                                </label>
+                                                <label class="radio-label">
+                                                    <input type="radio" name="hand_towels" value="no"> No
+                                                </label>
+                                            </div>
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="hand_towels_damage"> Damaged
+                                            </label>
+                                        </div>
+                                        <input type="text" class="notes-input" name="hand_towels_notes" placeholder="Notes (optional)">
+                                    </div>
+                                </div>
+
+                                <div class="item-row">
+                                    <div class="item-image-placeholder">No image</div>
+                                    <div class="item-content">
+                                        <div class="item-name">Soap and Dish Dispenser</div>
+                                        <div class="controls">
+                                            <div class="radio-group">
+                                                <label class="radio-label">
+                                                    <input type="radio" name="soap_dispenser" value="yes" required> Yes
+                                                </label>
+                                                <label class="radio-label">
+                                                    <input type="radio" name="soap_dispenser" value="no"> No
+                                                </label>
+                                            </div>
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="soap_dispenser_damage"> Damaged
+                                            </label>
+                                        </div>
+                                        <input type="text" class="notes-input" name="soap_dispenser_notes" placeholder="Notes (optional)">
+                                    </div>
+                                </div>
+
+                                <div class="item-row">
+                                    <div class="item-image-placeholder">No image</div>
+                                    <div class="item-content">
+                                        <div class="item-name">Kitchen Cooking Utensils</div>
+                                        <div class="controls">
+                                            <div class="radio-group">
+                                                <label class="radio-label">
+                                                    <input type="radio" name="cooking_utensils" value="yes" required> Yes
+                                                </label>
+                                                <label class="radio-label">
+                                                    <input type="radio" name="cooking_utensils" value="no"> No
+                                                </label>
+                                            </div>
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="cooking_utensils_damage"> Damaged
+                                            </label>
+                                        </div>
+                                        <input type="text" class="notes-input" name="cooking_utensils_notes" placeholder="Notes (optional)">
+                                    </div>
+                                </div>
+
+                                <div class="item-row">
+                                    <div class="item-image-placeholder">No image</div>
+                                    <div class="item-content">
+                                        <div class="item-name">Kitchen Colander / Pasta Drainer</div>
+                                        <div class="controls">
+                                            <div class="radio-group">
+                                                <label class="radio-label">
+                                                    <input type="radio" name="colander" value="yes" required> Yes
+                                                </label>
+                                                <label class="radio-label">
+                                                    <input type="radio" name="colander" value="no"> No
+                                                </label>
+                                            </div>
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="colander_damage"> Damaged
+                                            </label>
+                                        </div>
+                                        <input type="text" class="notes-input" name="colander_notes" placeholder="Notes (optional)">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- BEDROOM ESSENTIALS (NEW) -->
+                            <div class="room-section">
+                                <div class="room-header">🛏️ Bedroom Essentials - Linens</div>
+                                
+                                <div class="item-row">
+                                    <div class="item-image-placeholder">No image</div>
+                                    <div class="item-content">
+                                        <div class="item-name">Bed Sheets Set</div>
+                                        <div class="controls">
+                                            <div class="radio-group">
+                                                <label class="radio-label">
+                                                    <input type="radio" name="sheets" value="yes" required> Complete
+                                                </label>
+                                                <label class="radio-label">
+                                                    <input type="radio" name="sheets" value="no"> Missing
+                                                </label>
+                                            </div>
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="sheets_damage"> Damaged/Stained
+                                            </label>
+                                        </div>
+                                        <input type="text" class="notes-input" name="sheets_notes" placeholder="Quantity and condition notes">
+                                    </div>
+                                </div>
+
+                                <div class="item-row">
+                                    <div class="item-image-placeholder">No image</div>
+                                    <div class="item-content">
+                                        <div class="item-name">Pillows</div>
+                                        <div class="controls">
+                                            <div class="radio-group">
+                                                <label class="radio-label">
+                                                    <input type="radio" name="pillows" value="yes" required> Complete
+                                                </label>
+                                                <label class="radio-label">
+                                                    <input type="radio" name="pillows" value="no"> Missing
+                                                </label>
+                                            </div>
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="pillows_damage"> Damaged/Stained
+                                            </label>
+                                        </div>
+                                        <input type="text" class="notes-input" name="pillows_notes" placeholder="Quantity and condition notes">
+                                    </div>
+                                </div>
+
+                                <div class="item-row">
+                                    <div class="item-image-placeholder">No image</div>
+                                    <div class="item-content">
+                                        <div class="item-name">Pillowcases</div>
+                                        <div class="controls">
+                                            <div class="radio-group">
+                                                <label class="radio-label">
+                                                    <input type="radio" name="pillowcases" value="yes" required> Complete
+                                                </label>
+                                                <label class="radio-label">
+                                                    <input type="radio" name="pillowcases" value="no"> Missing
+                                                </label>
+                                            </div>
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="pillowcases_damage"> Damaged/Stained
+                                            </label>
+                                        </div>
+                                        <input type="text" class="notes-input" name="pillowcases_notes" placeholder="Quantity and condition notes">
+                                    </div>
+                                </div>
+
+                                <div class="item-row">
+                                    <div class="item-image-placeholder">No image</div>
+                                    <div class="item-content">
+                                        <div class="item-name">Duvet/Comforter</div>
+                                        <div class="controls">
+                                            <div class="radio-group">
+                                                <label class="radio-label">
+                                                    <input type="radio" name="duvet" value="yes" required> Yes
+                                                </label>
+                                                <label class="radio-label">
+                                                    <input type="radio" name="duvet" value="no"> No
+                                                </label>
+                                            </div>
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="duvet_damage"> Damaged/Stained
+                                            </label>
+                                        </div>
+                                        <input type="text" class="notes-input" name="duvet_notes" placeholder="Condition notes">
+                                    </div>
+                                </div>
+
+                                <div class="item-row">
+                                    <div class="item-image-placeholder">No image</div>
+                                    <div class="item-content">
+                                        <div class="item-name">Blankets (Extra)</div>
+                                        <div class="controls">
+                                            <div class="radio-group">
+                                                <label class="radio-label">
+                                                    <input type="radio" name="blankets" value="yes" required> Complete
+                                                </label>
+                                                <label class="radio-label">
+                                                    <input type="radio" name="blankets" value="no"> Missing
+                                                </label>
+                                            </div>
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="blankets_damage"> Damaged/Stained
+                                            </label>
+                                        </div>
+                                        <input type="text" class="notes-input" name="blankets_notes" placeholder="Quantity and condition notes">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- BATHROOM ESSENTIALS -->
+                            <div class="room-section">
+                                <div class="room-header">🛁 Bathroom Essentials</div>
+                                
+                                <div class="item-row">
+                                    <div class="item-image-placeholder">No image</div>
+                                    <div class="item-content">
+                                        <div class="item-name">Bath Towels</div>
+                                        <div class="controls">
+                                            <div class="radio-group">
+                                                <label class="radio-label">
+                                                    <input type="radio" name="bath_towels" value="yes" required> Complete
+                                                </label>
+                                                <label class="radio-label">
+                                                    <input type="radio" name="bath_towels" value="no"> Missing
+                                                </label>
+                                            </div>
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="bath_towels_damage"> Damaged/Stained
+                                            </label>
+                                        </div>
+                                        <input type="text" class="notes-input" name="bath_towels_notes" placeholder="Quantity and condition notes">
+                                    </div>
+                                </div>
+
+                                <div class="item-row">
+                                    <div class="item-image-placeholder">No image</div>
+                                    <div class="item-content">
+                                        <div class="item-name">Hand Towels</div>
+                                        <div class="controls">
+                                            <div class="radio-group">
+                                                <label class="radio-label">
+                                                    <input type="radio" name="hand_towels_bath" value="yes" required> Complete
+                                                </label>
+                                                <label class="radio-label">
+                                                    <input type="radio" name="hand_towels_bath" value="no"> Missing
+                                                </label>
+                                            </div>
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="hand_towels_bath_damage"> Damaged/Stained
+                                            </label>
+                                        </div>
+                                        <input type="text" class="notes-input" name="hand_towels_bath_notes" placeholder="Quantity and condition notes">
+                                    </div>
+                                </div>
+
+                                <div class="item-row">
+                                    <div class="item-image-placeholder">No image</div>
+                                    <div class="item-content">
+                                        <div class="item-name">Washcloths</div>
+                                        <div class="controls">
+                                            <div class="radio-group">
+                                                <label class="radio-label">
+                                                    <input type="radio" name="washcloths" value="yes" required> Complete
+                                                </label>
+                                                <label class="radio-label">
+                                                    <input type="radio" name="washcloths" value="no"> Missing
+                                                </label>
+                                            </div>
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="washcloths_damage"> Damaged/Stained
+                                            </label>
+                                        </div>
+                                        <input type="text" class="notes-input" name="washcloths_notes" placeholder="Quantity and condition notes">
+                                    </div>
+                                </div>
+
+                                <div class="item-row">
+                                    <div class="item-image-placeholder">No image</div>
+                                    <div class="item-content">
+                                        <div class="item-name">Bath Mat</div>
+                                        <div class="controls">
+                                            <div class="radio-group">
+                                                <label class="radio-label">
+                                                    <input type="radio" name="bath_mat" value="yes" required> Yes
+                                                </label>
+                                                <label class="radio-label">
+                                                    <input type="radio" name="bath_mat" value="no"> No
+                                                </label>
+                                            </div>
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="bath_mat_damage"> Damaged/Stained
+                                            </label>
+                                        </div>
+                                        <input type="text" class="notes-input" name="bath_mat_notes" placeholder="Condition notes">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- RESTOCKING - BATHROOM -->
+                            <div class="room-section">
+                                <div class="room-header restock">🧴 Restocking - Bathroom Essentials</div>
+                                
+                                <div class="item-row">
+                                    <div class="item-image-placeholder">No image</div>
+                                    <div class="item-content">
+                                        <div class="item-name">Shampoo</div>
+                                        <div class="controls">
+                                            <div class="stock-level">
+                                                <label class="stock-option full">
+                                                    <input type="radio" name="shampoo" value="full" required> Full Stock
+                                                </label>
+                                                <label class="stock-option low">
+                                                    <input type="radio" name="shampoo" value="low"> Low Stock
+                                                </label>
+                                                <label class="stock-option empty">
+                                                    <input type="radio" name="shampoo" value="empty"> Empty/Missing
+                                                </label>
+                                            </div>
+                                            <label class="checkbox-label" style="color: #1fc8c8;">
+                                                <input type="checkbox" name="shampoo_restock"> Needs Restock
+                                            </label>
+                                            <input type="number" class="quantity-input" name="shampoo_qty" placeholder="Qty" min="0">
+                                        </div>
+                                        <input type="text" class="notes-input" name="shampoo_notes" placeholder="Notes (optional)">
+                                    </div>
+                                </div>
+
+                                <div class="item-row">
+                                    <div class="item-image-placeholder">No image</div>
+                                    <div class="item-content">
+                                        <div class="item-name">Conditioner</div>
+                                        <div class="controls">
+                                            <div class="stock-level">
+                                                <label class="stock-option full">
+                                                    <input type="radio" name="conditioner" value="full" required> Full Stock
+                                                </label>
+                                                <label class="stock-option low">
+                                                    <input type="radio" name="conditioner" value="low"> Low Stock
+                                                </label>
+                                                <label class="stock-option empty">
+                                                    <input type="radio" name="conditioner" value="empty"> Empty/Missing
+                                                </label>
+                                            </div>
+                                            <label class="checkbox-label" style="color: #1fc8c8;">
+                                                <input type="checkbox" name="conditioner_restock"> Needs Restock
+                                            </label>
+                                            <input type="number" class="quantity-input" name="conditioner_qty" placeholder="Qty" min="0">
+                                        </div>
+                                        <input type="text" class="notes-input" name="conditioner_notes" placeholder="Notes (optional)">
+                                    </div>
+                                </div>
+
+                                <div class="item-row">
+                                    <div class="item-image-placeholder">No image</div>
+                                    <div class="item-content">
+                                        <div class="item-name">Body Wash / Soap</div>
+                                        <div class="controls">
+                                            <div class="stock-level">
+                                                <label class="stock-option full">
+                                                    <input type="radio" name="body_wash" value="full" required> Full Stock
+                                                </label>
+                                                <label class="stock-option low">
+                                                    <input type="radio" name="body_wash" value="low"> Low Stock
+                                                </label>
+                                                <label class="stock-option empty">
+                                                    <input type="radio" name="body_wash" value="empty"> Empty/Missing
+                                                </label>
+                                            </div>
+                                            <label class="checkbox-label" style="color: #1fc8c8;">
+                                                <input type="checkbox" name="body_wash_restock"> Needs Restock
+                                            </label>
+                                            <input type="number" class="quantity-input" name="body_wash_qty" placeholder="Qty" min="0">
+                                        </div>
+                                        <input type="text" class="notes-input" name="body_wash_notes" placeholder="Notes (optional)">
+                                    </div>
+                                </div>
+
+                                <div class="item-row">
+                                    <div class="item-image-placeholder">No image</div>
+                                    <div class="item-content">
+                                        <div class="item-name">Hand Soap</div>
+                                        <div class="controls">
+                                            <div class="stock-level">
+                                                <label class="stock-option full">
+                                                    <input type="radio" name="hand_soap_bath" value="full" required> Full Stock
+                                                </label>
+                                                <label class="stock-option low">
+                                                    <input type="radio" name="hand_soap_bath" value="low"> Low Stock
+                                                </label>
+                                                <label class="stock-option empty">
+                                                    <input type="radio" name="hand_soap_bath" value="empty"> Empty/Missing
+                                                </label>
+                                            </div>
+                                            <label class="checkbox-label" style="color: #1fc8c8;">
+                                                <input type="checkbox" name="hand_soap_bath_restock"> Needs Restock
+                                            </label>
+                                            <input type="number" class="quantity-input" name="hand_soap_bath_qty" placeholder="Qty" min="0">
+                                        </div>
+                                        <input type="text" class="notes-input" name="hand_soap_bath_notes" placeholder="Notes (optional)">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- RESTOCKING - KITCHEN -->
+                            <div class="room-section">
+                                <div class="room-header restock">🧽 Restocking - Kitchen Essentials</div>
+                                
+                                <div class="item-row">
+                                    <div class="item-image-placeholder">No image</div>
+                                    <div class="item-content">
+                                        <div class="item-name">Dishwasher Pods</div>
+                                        <div class="controls">
+                                            <div class="stock-level">
+                                                <label class="stock-option full">
+                                                    <input type="radio" name="dishwasher_pods" value="full" required> Full Stock
+                                                </label>
+                                                <label class="stock-option low">
+                                                    <input type="radio" name="dishwasher_pods" value="low"> Low Stock
+                                                </label>
+                                                <label class="stock-option empty">
+                                                    <input type="radio" name="dishwasher_pods" value="empty"> Empty/Missing
+                                                </label>
+                                            </div>
+                                            <label class="checkbox-label" style="color: #1fc8c8;">
+                                                <input type="checkbox" name="dishwasher_pods_restock"> Needs Restock
+                                            </label>
+                                            <input type="number" class="quantity-input" name="dishwasher_pods_qty" placeholder="Qty" min="0">
+                                        </div>
+                                        <input type="text" class="notes-input" name="dishwasher_pods_notes" placeholder="Notes (optional)">
+                                    </div>
+                                </div>
+
+                                <div class="item-row">
+                                    <div class="item-image-placeholder">No image</div>
+                                    <div class="item-content">
+                                        <div class="item-name">Dish Soap / Detergent</div>
+                                        <div class="controls">
+                                            <div class="stock-level">
+                                                <label class="stock-option full">
+                                                    <input type="radio" name="dish_soap" value="full" required> Full Stock
+                                                </label>
+                                                <label class="stock-option low">
+                                                    <input type="radio" name="dish_soap" value="low"> Low Stock
+                                                </label>
+                                                <label class="stock-option empty">
+                                                    <input type="radio" name="dish_soap" value="empty"> Empty/Missing
+                                                </label>
+                                            </div>
+                                            <label class="checkbox-label" style="color: #1fc8c8;">
+                                                <input type="checkbox" name="dish_soap_restock"> Needs Restock
+                                            </label>
+                                            <input type="number" class="quantity-input" name="dish_soap_qty" placeholder="Qty" min="0">
+                                        </div>
+                                        <input type="text" class="notes-input" name="dish_soap_notes" placeholder="Notes (optional)">
+                                    </div>
+                                </div>
+
+                                <div class="item-row">
+                                    <div class="item-image-placeholder">No image</div>
+                                    <div class="item-content">
+                                        <div class="item-name">Hand Washing Soap</div>
+                                        <div class="controls">
+                                            <div class="stock-level">
+                                                <label class="stock-option full">
+                                                    <input type="radio" name="hand_soap_kitchen" value="full" required> Full Stock
+                                                </label>
+                                                <label class="stock-option low">
+                                                    <input type="radio" name="hand_soap_kitchen" value="low"> Low Stock
+                                                </label>
+                                                <label class="stock-option empty">
+                                                    <input type="radio" name="hand_soap_kitchen" value="empty"> Empty/Missing
+                                                </label>
+                                            </div>
+                                            <label class="checkbox-label" style="color: #1fc8c8;">
+                                                <input type="checkbox" name="hand_soap_kitchen_restock"> Needs Restock
+                                            </label>
+                                            <input type="number" class="quantity-input" name="hand_soap_kitchen_qty" placeholder="Qty" min="0">
+                                        </div>
+                                        <input type="text" class="notes-input" name="hand_soap_kitchen_notes" placeholder="Notes (optional)">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- RESTOCKING - GUEST AMENITIES -->
+                            <div class="room-section">
+                                <div class="room-header restock">🍷 Restocking - Guest Amenities</div>
+                                
+                                <div class="item-row">
+                                    <div class="item-image-placeholder">No image</div>
+                                    <div class="item-content">
+                                        <div class="item-name">Wine (Welcome Bottle)</div>
+                                        <div class="controls">
+                                            <div class="stock-level">
+                                                <label class="stock-option full">
+                                                    <input type="radio" name="wine" value="full" required> Full Stock
+                                                </label>
+                                                <label class="stock-option low">
+                                                    <input type="radio" name="wine" value="low"> Low Stock
+                                                </label>
+                                                <label class="stock-option empty">
+                                                    <input type="radio" name="wine" value="empty"> Empty/Missing
+                                                </label>
+                                            </div>
+                                            <label class="checkbox-label" style="color: #1fc8c8;">
+                                                <input type="checkbox" name="wine_restock"> Needs Restock
+                                            </label>
+                                            <input type="number" class="quantity-input" name="wine_qty" placeholder="Qty" min="0">
+                                        </div>
+                                        <input type="text" class="notes-input" name="wine_notes" placeholder="Notes (optional)">
+                                    </div>
+                                </div>
+
+                                <div class="item-row">
+                                    <div class="item-image-placeholder">No image</div>
+                                    <div class="item-content">
+                                        <div class="item-name">Water Bottles</div>
+                                        <div class="controls">
+                                            <div class="stock-level">
+                                                <label class="stock-option full">
+                                                    <input type="radio" name="water_bottles" value="full" required> Full Stock
+                                                </label>
+                                                <label class="stock-option low">
+                                                    <input type="radio" name="water_bottles" value="low"> Low Stock
+                                                </label>
+                                                <label class="stock-option empty">
+                                                    <input type="radio" name="water_bottles" value="empty"> Empty/Missing
+                                                </label>
+                                            </div>
+                                            <label class="checkbox-label" style="color: #1fc8c8;">
+                                                <input type="checkbox" name="water_bottles_restock"> Needs Restock
+                                            </label>
+                                            <input type="number" class="quantity-input" name="water_bottles_qty" placeholder="Qty" min="0">
+                                        </div>
+                                        <input type="text" class="notes-input" name="water_bottles_notes" placeholder="Notes (optional)">
+                                    </div>
+                                </div>
+
+                                <div class="item-row">
+                                    <div class="item-image-placeholder">No image</div>
+                                    <div class="item-content">
+                                        <div class="item-name">Guest Snacks</div>
+                                        <div class="controls">
+                                            <div class="stock-level">
+                                                <label class="stock-option full">
+                                                    <input type="radio" name="guest_snacks" value="full" required> Full Stock
+                                                </label>
+                                                <label class="stock-option low">
+                                                    <input type="radio" name="guest_snacks" value="low"> Low Stock
+                                                </label>
+                                                <label class="stock-option empty">
+                                                    <input type="radio" name="guest_snacks" value="empty"> Empty/Missing
+                                                </label>
+                                            </div>
+                                            <label class="checkbox-label" style="color: #1fc8c8;">
+                                                <input type="checkbox" name="guest_snacks_restock"> Needs Restock
+                                            </label>
+                                            <input type="number" class="quantity-input" name="guest_snacks_qty" placeholder="Qty" min="0">
+                                        </div>
+                                        <input type="text" class="notes-input" name="guest_snacks_notes" placeholder="Notes (optional)">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <button type="submit" class="submit-btn">📧 Submit Report</button>
@@ -506,17 +1552,12 @@
             <div id="admin-tab" class="tab-content">
                 <div class="admin-panel">
                     <h2>Admin Panel</h2>
+                    <p style="color: #666; margin-bottom: 20px;">Full section/item editing coming in next update. For now, you can manage units.</p>
                     
                     <div class="admin-section">
                         <h3>📍 Unit Locations</h3>
                         <ul class="admin-list" id="unitsList"></ul>
                         <button class="btn-add" onclick="addUnit()">+ Add Unit</button>
-                    </div>
-
-                    <div class="admin-section">
-                        <h3>📦 Sections & Items</h3>
-                        <ul class="admin-list" id="sectionsList"></ul>
-                        <button class="btn-add" onclick="addSection()">+ Add Section</button>
                     </div>
                 </div>
             </div>
@@ -544,9 +1585,7 @@
         window.isAdmin = false;
         window.isAuthenticated = false;
         window.currentUnits = [];
-        window.currentSections = [];
 
-        // Check access code
         window.checkAccess = function() {
             const code = document.getElementById('accessCodeInput').value;
             if (code === 'Vita3046' || code === '2008') {
@@ -556,18 +1595,16 @@
                 }
                 document.getElementById('accessCheck').style.display = 'none';
                 document.getElementById('mainApp').style.display = 'block';
-                startApp();
+                loadUnits();
             } else {
                 alert('❌ Invalid access code');
             }
         };
 
-        // Allow Enter key on access code input
         document.getElementById('accessCodeInput')?.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') checkAccess();
         });
 
-        // Display current date
         const today = new Date();
         const dateElement = document.getElementById('currentDate');
         if (dateElement) {
@@ -577,22 +1614,6 @@
                 month: 'long',
                 day: 'numeric'
             });
-        }
-
-        async function startApp() {
-            try {
-                await loadUnits();
-                await loadSections();
-                renderChecklist();
-            } catch (error) {
-                console.error('Initialization error:', error);
-                document.getElementById('inventoryItems').innerHTML = `
-                    <div class="error">
-                        <strong>Error loading inventory:</strong> ${error.message}<br>
-                        Please check Firebase setup and try again.
-                    </div>
-                `;
-            }
         }
 
         async function loadUnits() {
@@ -618,57 +1639,6 @@
             renderUnitDropdown();
         }
 
-        async function loadSections() {
-            const sectionsSnapshot = await getDocs(collection(db, 'sections'));
-            window.currentSections = [];
-            sectionsSnapshot.forEach(doc => {
-                window.currentSections.push({ id: doc.id, ...doc.data() });
-            });
-
-            if (window.currentSections.length === 0) {
-                await initializeDefaultData();
-            }
-        }
-
-        async function initializeDefaultData() {
-            const defaultData = {
-                name: "Electronics and Appliances",
-                rooms: [
-                    {
-                        name: "Kitchen",
-                        items: [
-                            { name: "Alexa Speaker", imageUrl: "", location: "Kitchen Counter" },
-                            { name: "Noise Monitor", imageUrl: "", location: "Kitchen Wall" },
-                            { name: "Nespresso/Keurig Coffee Maker", imageUrl: "", location: "Kitchen Counter" }
-                        ]
-                    },
-                    {
-                        name: "Bedroom",
-                        items: [
-                            { name: "Rectangle Sound Noise Wood Machine", imageUrl: "", location: "Nightstand" }
-                        ]
-                    },
-                    {
-                        name: "Bathroom",
-                        items: [
-                            { name: "Towel Warmer", imageUrl: "", location: "Bathroom Wall" },
-                            { name: "Hair Dryer", imageUrl: "", location: "Under Sink" }
-                        ]
-                    },
-                    {
-                        name: "Living Room",
-                        items: [
-                            { name: "Samsung TV Roku Device", imageUrl: "", location: "TV Stand" },
-                            { name: "DREO Radiator Heater", imageUrl: "", location: "Corner" }
-                        ]
-                    }
-                ]
-            };
-
-            const docRef = await addDoc(collection(db, 'sections'), defaultData);
-            window.currentSections.push({ id: docRef.id, ...defaultData });
-        }
-
         function renderUnitDropdown() {
             const select = document.getElementById('unitLocation');
             if (!select) return;
@@ -679,71 +1649,6 @@
                 option.value = unit.id;
                 option.textContent = unit.name;
                 select.appendChild(option);
-            });
-        }
-
-        function renderChecklist() {
-            const container = document.getElementById('inventoryItems');
-            if (!container) return;
-            
-            container.innerHTML = '';
-
-            window.currentSections.forEach(section => {
-                const sectionDiv = document.createElement('div');
-                sectionDiv.className = 'room-section';
-
-                const sectionHeader = document.createElement('div');
-                sectionHeader.className = 'room-header';
-                sectionHeader.textContent = section.name;
-                sectionDiv.appendChild(sectionHeader);
-
-                section.rooms?.forEach(room => {
-                    const roomHeader = document.createElement('div');
-                    roomHeader.className = 'room-subheader';
-                    roomHeader.textContent = room.name;
-                    sectionDiv.appendChild(roomHeader);
-
-                    room.items?.forEach((item, idx) => {
-                        const itemRow = document.createElement('div');
-                        itemRow.className = 'item-row';
-
-                        if (item.imageUrl) {
-                            const img = document.createElement('img');
-                            img.className = 'item-image';
-                            img.src = item.imageUrl;
-                            img.alt = item.name;
-                            img.onerror = function() { this.style.display = 'none'; };
-                            itemRow.appendChild(img);
-                        }
-
-                        const itemContent = document.createElement('div');
-                        itemContent.className = 'item-content';
-
-                        itemContent.innerHTML = `
-                            <div class="item-name">${item.name}</div>
-                            ${item.location ? `<div class="item-location">📍 ${item.location}</div>` : ''}
-                            <div class="controls">
-                                <div class="radio-group">
-                                    <label class="radio-label">
-                                        <input type="radio" name="item_${section.id}_${room.name}_${idx}" value="yes" required> Yes
-                                    </label>
-                                    <label class="radio-label">
-                                        <input type="radio" name="item_${section.id}_${room.name}_${idx}" value="no"> No
-                                    </label>
-                                </div>
-                                <label class="checkbox-label">
-                                    <input type="checkbox" name="item_${section.id}_${room.name}_${idx}_damage"> Damaged
-                                </label>
-                            </div>
-                            <input type="text" class="notes-input" name="item_${section.id}_${room.name}_${idx}_notes" placeholder="Notes (optional)">
-                        `;
-
-                        itemRow.appendChild(itemContent);
-                        sectionDiv.appendChild(itemRow);
-                    });
-                });
-
-                container.appendChild(sectionDiv);
             });
         }
 
@@ -762,24 +1667,10 @@
                 items: []
             };
 
-            window.currentSections.forEach(section => {
-                section.rooms?.forEach(room => {
-                    room.items?.forEach((item, idx) => {
-                        const status = formData.get(`item_${section.id}_${room.name}_${idx}`);
-                        const damaged = formData.get(`item_${section.id}_${room.name}_${idx}_damage`);
-                        const notes = formData.get(`item_${section.id}_${room.name}_${idx}_notes`);
-
-                        report.items.push({
-                            section: section.name,
-                            room: room.name,
-                            name: item.name,
-                            status: status,
-                            damaged: !!damaged,
-                            notes: notes || ''
-                        });
-                    });
-                });
-            });
+            // Collect all form data
+            for (let [key, value] of formData.entries()) {
+                report.items.push({ field: key, value: value });
+            }
 
             try {
                 await addDoc(collection(db, 'reports'), report);
@@ -834,19 +1725,6 @@
                     unitsList.appendChild(li);
                 });
             }
-
-            const sectionsList = document.getElementById('sectionsList');
-            if (sectionsList) {
-                sectionsList.innerHTML = '';
-                window.currentSections.forEach(section => {
-                    const li = document.createElement('li');
-                    li.className = 'admin-list-item';
-                    li.innerHTML = `
-                        <span>${section.name} (${section.rooms?.length || 0} rooms)</span>
-                    `;
-                    sectionsList.appendChild(li);
-                });
-            }
         }
 
         window.switchTab = function(tabName) {
@@ -883,17 +1761,13 @@
 
                 reportsList.innerHTML = '';
                 reports.forEach(report => {
-                    const missingCount = report.items.filter(i => i.status === 'no').length;
-                    const damagedCount = report.items.filter(i => i.damaged).length;
-                    const hasIssues = missingCount > 0 || damagedCount > 0;
-
                     const card = document.createElement('div');
-                    card.className = `report-card ${hasIssues ? 'has-issues' : ''}`;
+                    card.className = 'report-card';
                     card.innerHTML = `
                         <h3>${report.unitName}</h3>
                         <p><strong>Date:</strong> ${report.date}</p>
                         <p><strong>Inspector:</strong> ${report.inspector}</p>
-                        <p><strong>Status:</strong> ${hasIssues ? `⚠️ ${missingCount} missing, ${damagedCount} damaged` : '✅ All Clear'}</p>
+                        <p><strong>Items Logged:</strong> ${report.items?.length || 0}</p>
                     `;
                     reportsList.appendChild(card);
                 });
@@ -906,7 +1780,8 @@
             const name = prompt('Enter unit name:');
             if (name) {
                 addDoc(collection(db, 'units'), { name }).then(() => {
-                    loadUnits().then(renderAdminPanel);
+                    loadUnits();
+                    if (window.isAdmin) renderAdminPanel();
                 });
             }
         };
@@ -914,13 +1789,10 @@
         window.deleteUnit = function(id) {
             if (confirm('Delete this unit?')) {
                 deleteDoc(doc(db, 'units', id)).then(() => {
-                    loadUnits().then(renderAdminPanel);
+                    loadUnits();
+                    if (window.isAdmin) renderAdminPanel();
                 });
             }
-        };
-
-        window.addSection = function() {
-            alert('Section management coming soon!');
         };
     </script>
 </body>
