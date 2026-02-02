@@ -71,6 +71,43 @@
             border-color: #ffd700;
         }
 
+        .nav-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            background: none;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .nav-tab.active {
+            background: white;
+            color: #1fc8c8;
+            border-bottom: 3px solid #1fc8c8;
+        }
+
+        .nav-tab:hover {
+            background: #e9ecef;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
         .form-section {
             padding: 20px;
         }
@@ -404,15 +441,6 @@
             transform: translateY(-2px);
         }
 
-        .debug-info {
-            background: #fff3cd;
-            border: 1px solid #ffc107;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 4px;
-            font-size: 12px;
-        }
-
         .loading {
             text-align: center;
             padding: 40px;
@@ -457,6 +485,199 @@
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
+        }
+
+        /* REPORTS STYLES */
+        .reports-container {
+            padding: 20px;
+        }
+
+        .reports-header {
+            margin-bottom: 20px;
+        }
+
+        .reports-header h2 {
+            color: #1fc8c8;
+            margin-bottom: 15px;
+        }
+
+        .reports-filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filter-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .filter-group select,
+        .filter-group input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .report-card {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .report-card:hover {
+            border-color: #1fc8c8;
+            box-shadow: 0 4px 12px rgba(31, 200, 200, 0.2);
+        }
+
+        .report-card.has-issues {
+            border-left: 5px solid #f45c43;
+        }
+
+        .report-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .report-card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .report-card-date {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .report-card-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .report-info-item {
+            font-size: 14px;
+        }
+
+        .report-info-label {
+            font-weight: 600;
+            color: #666;
+        }
+
+        .report-status {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .status-badge.success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-badge.warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-badge.danger {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .report-details {
+            display: none;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #e9ecef;
+        }
+
+        .report-details.show {
+            display: block;
+        }
+
+        .report-details-section {
+            margin-bottom: 20px;
+        }
+
+        .report-details-section h4 {
+            color: #1fc8c8;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .report-item {
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            margin-bottom: 8px;
+        }
+
+        .report-item.issue {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+        }
+
+        .report-item.critical {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+        }
+
+        .report-item-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .report-item-details {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .export-btn {
+            padding: 10px 20px;
+            background: #5cb85c;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .no-reports {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .no-reports-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
         }
 
         .modal {
@@ -572,6 +793,10 @@
                 flex-direction: column;
                 align-items: flex-start;
             }
+
+            .reports-filters {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -593,42 +818,83 @@
         </div>
 
         <div id="mainApp" style="display: none;">
-            <div class="form-section">
-                <div id="adminBanner" class="admin-mode-banner" style="display: none;">
-                    🔧 ADMIN MODE ACTIVE - You can edit sections and items
-                </div>
+            <div class="nav-tabs" id="navTabs">
+                <button class="nav-tab active" onclick="switchTab('checklist')">📋 New Inspection</button>
+                <button class="nav-tab" onclick="switchTab('reports')">📊 Reports</button>
+            </div>
 
-                <div class="auto-info">
-                    📅 <strong>Today's Date:</strong> <span id="currentDate"></span><br>
-                    👥 <strong>Inspector:</strong> Vita Professional Cleaning Crew
-                </div>
+            <!-- CHECKLIST TAB -->
+            <div id="checklist-tab" class="tab-content active">
+                <div class="form-section">
+                    <div id="adminBanner" class="admin-mode-banner" style="display: none;">
+                        🔧 ADMIN MODE ACTIVE - You can edit sections and items
+                    </div>
 
-                <form id="inventoryForm">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="unitLocation">Unit Location:</label>
-                            <select id="unitLocation" required onchange="loadInventoryForUnit()">
-                                <option value="">Select Unit...</option>
-                            </select>
+                    <div class="auto-info">
+                        📅 <strong>Today's Date:</strong> <span id="currentDate"></span><br>
+                        👥 <strong>Inspector:</strong> Vita Professional Cleaning Crew
+                    </div>
+
+                    <form id="inventoryForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="unitLocation">Unit Location:</label>
+                                <select id="unitLocation" required onchange="loadInventoryForUnit()">
+                                    <option value="">Select Unit...</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div id="inventoryItems">
+                            <p style="text-align: center; padding: 40px; color: #666;">Please select a unit to view inventory</p>
+                        </div>
+
+                        <button type="button" id="addSectionBtn" class="add-section-btn" style="display: none;" onclick="addNewSection()">
+                            ➕ Add New Section
+                        </button>
+
+                        <button type="submit" class="submit-btn">📧 Submit Report</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- REPORTS TAB -->
+            <div id="reports-tab" class="tab-content">
+                <div class="reports-container">
+                    <div class="reports-header">
+                        <h2>📊 Inspection Reports</h2>
+                        
+                        <div class="reports-filters">
+                            <div class="filter-group">
+                                <label>Filter by Unit:</label>
+                                <select id="filterUnit" onchange="filterReports()">
+                                    <option value="">All Units</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label>Filter by Date:</label>
+                                <input type="date" id="filterDate" onchange="filterReports()">
+                            </div>
+                            <div class="filter-group">
+                                <label>Show:</label>
+                                <select id="filterStatus" onchange="filterReports()">
+                                    <option value="all">All Reports</option>
+                                    <option value="issues">Issues Only</option>
+                                    <option value="clean">Clean Reports</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
 
-                    <div id="debugInfo" class="debug-info" style="display: none;"></div>
-
-                    <div id="inventoryItems">
-                        <p style="text-align: center; padding: 40px; color: #666;">Please select a unit to view inventory</p>
+                    <div id="reportsList">
+                        <div class="loading">Loading reports...</div>
                     </div>
-
-                    <button type="button" id="addSectionBtn" class="add-section-btn" style="display: none;" onclick="addNewSection()">
-                        ➕ Add New Section
-                    </button>
-
-                    <button type="submit" class="submit-btn">📧 Submit Report</button>
-                </form>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- Edit Item Modal -->
     <div id="editModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -659,7 +925,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, doc, setDoc, deleteDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, doc, setDoc, deleteDoc, getDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyC6W83NZRYljB8YrLHGRvDtDBoU_vCBao0",
@@ -680,6 +946,7 @@
         window.currentUnits = [];
         window.currentInventory = {};
         window.editingItem = null;
+        window.allReports = [];
 
         const today = new Date();
         document.getElementById('currentDate').textContent = today.toLocaleDateString('en-US', {
@@ -728,6 +995,7 @@
             }
 
             renderUnitDropdown();
+            populateFilterDropdowns();
         }
 
         function renderUnitDropdown() {
@@ -738,6 +1006,17 @@
                 option.value = unit.id;
                 option.textContent = unit.name;
                 select.appendChild(option);
+            });
+        }
+
+        function populateFilterDropdowns() {
+            const filterUnit = document.getElementById('filterUnit');
+            filterUnit.innerHTML = '<option value="">All Units</option>';
+            window.currentUnits.forEach(unit => {
+                const option = document.createElement('option');
+                option.value = unit.id;
+                option.textContent = unit.name;
+                filterUnit.appendChild(option);
             });
         }
 
@@ -755,24 +1034,15 @@
 
             if (docSnap.exists()) {
                 window.currentInventory = docSnap.data();
-                console.log('Loaded existing inventory:', window.currentInventory);
             } else {
-                console.log('Creating new default inventory for unit:', unitId);
                 window.currentInventory = getDefaultInventory();
                 await setDoc(docRef, window.currentInventory);
-                console.log('Saved default inventory to Firebase');
             }
-
-            // Debug info
-            const debugDiv = document.getElementById('debugInfo');
-            debugDiv.style.display = 'block';
-            debugDiv.innerHTML = `<strong>Debug:</strong> Loaded ${window.currentInventory.sections?.length || 0} sections`;
 
             renderInventory();
         };
 
         function getDefaultInventory() {
-            console.log('Creating default inventory with ALL 7 sections');
             return {
                 sections: [
                     {
@@ -924,18 +1194,12 @@
             const container = document.getElementById('inventoryItems');
             container.innerHTML = '';
 
-            console.log('Rendering inventory:', window.currentInventory);
-
             if (!window.currentInventory.sections || window.currentInventory.sections.length === 0) {
                 container.innerHTML = '<p style="text-align: center; padding: 40px; color: #666;">No inventory sections found</p>';
                 return;
             }
 
-            console.log(`Rendering ${window.currentInventory.sections.length} sections`);
-
             window.currentInventory.sections.forEach((section, sectionIdx) => {
-                console.log(`Rendering section ${sectionIdx}: ${section.name}`);
-                
                 const sectionDiv = document.createElement('div');
                 sectionDiv.className = 'room-section';
 
@@ -1072,11 +1336,209 @@
                 container.appendChild(sectionDiv);
             });
 
-            console.log('Finished rendering inventory');
-
             document.getElementById('addSectionBtn').style.display = window.adminModeActive ? 'block' : 'none';
         }
 
+        // REPORTS FUNCTIONALITY
+        window.switchTab = function(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
+            
+            document.getElementById(`${tabName}-tab`)?.classList.add('active');
+            event.target.classList.add('active');
+
+            if (tabName === 'reports') {
+                loadReports();
+            }
+        };
+
+        async function loadReports() {
+            const reportsList = document.getElementById('reportsList');
+            reportsList.innerHTML = '<div class="loading">Loading reports...</div>';
+
+            try {
+                const reportsSnapshot = await getDocs(collection(db, 'reports'));
+                window.allReports = [];
+                reportsSnapshot.forEach(doc => {
+                    window.allReports.push({ id: doc.id, ...doc.data() });
+                });
+
+                window.allReports.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+                if (window.allReports.length === 0) {
+                    reportsList.innerHTML = `
+                        <div class="no-reports">
+                            <div class="no-reports-icon">📋</div>
+                            <h3>No Reports Yet</h3>
+                            <p>Reports will appear here after inspections are submitted.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                renderReports(window.allReports);
+            } catch (error) {
+                reportsList.innerHTML = `<div class="error">Error loading reports: ${error.message}</div>`;
+            }
+        }
+
+        function renderReports(reports) {
+            const reportsList = document.getElementById('reportsList');
+            reportsList.innerHTML = '';
+
+            reports.forEach((report, idx) => {
+                // Calculate statistics
+                const itemsMap = {};
+                report.items.forEach(item => {
+                    const baseName = item.field.replace(/_damage|_notes|_qty|_restock/g, '');
+                    if (!itemsMap[baseName]) {
+                        itemsMap[baseName] = {};
+                    }
+                    
+                    if (item.field.endsWith('_damage')) {
+                        itemsMap[baseName].damaged = item.value === 'on';
+                    } else if (item.field.endsWith('_notes')) {
+                        itemsMap[baseName].notes = item.value;
+                    } else if (item.field.endsWith('_restock')) {
+                        itemsMap[baseName].needsRestock = item.value === 'on';
+                    } else if (item.field.endsWith('_qty')) {
+                        itemsMap[baseName].quantity = item.value;
+                    } else {
+                        itemsMap[baseName].status = item.value;
+                    }
+                });
+
+                const missingCount = Object.values(itemsMap).filter(i => i.status === 'no' || i.status === 'empty').length;
+                const damagedCount = Object.values(itemsMap).filter(i => i.damaged).length;
+                const restockCount = Object.values(itemsMap).filter(i => i.needsRestock || i.status === 'low' || i.status === 'empty').length;
+                const hasIssues = missingCount > 0 || damagedCount > 0 || restockCount > 0;
+
+                const card = document.createElement('div');
+                card.className = `report-card ${hasIssues ? 'has-issues' : ''}`;
+                card.innerHTML = `
+                    <div class="report-card-header">
+                        <div class="report-card-title">${report.unitName}</div>
+                        <div class="report-card-date">${new Date(report.timestamp).toLocaleDateString('en-US', { 
+                            weekday: 'short', 
+                            year: 'numeric', 
+                            month: 'short', 
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        })}</div>
+                    </div>
+                    
+                    <div class="report-card-info">
+                        <div class="report-info-item">
+                            <span class="report-info-label">Inspector:</span> ${report.inspector}
+                        </div>
+                        <div class="report-info-item">
+                            <span class="report-info-label">Date:</span> ${report.date}
+                        </div>
+                        <div class="report-info-item">
+                            <span class="report-info-label">Items Checked:</span> ${Object.keys(itemsMap).length}
+                        </div>
+                    </div>
+
+                    <div class="report-status">
+                        ${hasIssues ? '' : '<span class="status-badge success">✅ All Clear</span>'}
+                        ${missingCount > 0 ? `<span class="status-badge danger">⚠️ ${missingCount} Missing</span>` : ''}
+                        ${damagedCount > 0 ? `<span class="status-badge danger">🔧 ${damagedCount} Damaged</span>` : ''}
+                        ${restockCount > 0 ? `<span class="status-badge warning">📦 ${restockCount} Need Restock</span>` : ''}
+                    </div>
+
+                    <div class="report-details" id="details-${idx}">
+                        <div class="report-details-section">
+                            <h4>Issues Found:</h4>
+                            ${Object.entries(itemsMap).filter(([name, data]) => 
+                                data.status === 'no' || data.status === 'empty' || data.damaged || data.needsRestock
+                            ).map(([name, data]) => `
+                                <div class="report-item ${data.damaged ? 'critical' : 'issue'}">
+                                    <div class="report-item-name">${name}</div>
+                                    <div class="report-item-details">
+                                        ${data.status === 'no' || data.status === 'empty' ? '❌ Missing/Empty • ' : ''}
+                                        ${data.damaged ? '🔧 Damaged • ' : ''}
+                                        ${data.needsRestock ? '📦 Needs Restock • ' : ''}
+                                        ${data.status === 'low' ? '⚠️ Low Stock • ' : ''}
+                                        ${data.notes ? `Note: ${data.notes}` : ''}
+                                    </div>
+                                </div>
+                            `).join('') || '<p style="color: #666;">No issues found.</p>'}
+                        </div>
+                        
+                        <button class="export-btn" onclick="exportReportToCSV('${report.id}')">💾 Export to CSV</button>
+                    </div>
+                `;
+
+                card.addEventListener('click', function(e) {
+                    if (e.target.classList.contains('export-btn')) return;
+                    const details = document.getElementById(`details-${idx}`);
+                    details.classList.toggle('show');
+                });
+
+                reportsList.appendChild(card);
+            });
+        }
+
+        window.filterReports = function() {
+            const filterUnit = document.getElementById('filterUnit').value;
+            const filterDate = document.getElementById('filterDate').value;
+            const filterStatus = document.getElementById('filterStatus').value;
+
+            let filtered = window.allReports;
+
+            if (filterUnit) {
+                filtered = filtered.filter(r => r.unit === filterUnit);
+            }
+
+            if (filterDate) {
+                filtered = filtered.filter(r => r.date === filterDate);
+            }
+
+            if (filterStatus === 'issues') {
+                filtered = filtered.filter(r => {
+                    const hasIssues = r.items.some(item => 
+                        item.value === 'no' || item.value === 'empty' || 
+                        item.field.endsWith('_damage') || 
+                        item.field.endsWith('_restock')
+                    );
+                    return hasIssues;
+                });
+            } else if (filterStatus === 'clean') {
+                filtered = filtered.filter(r => {
+                    const hasIssues = r.items.some(item => 
+                        item.value === 'no' || item.value === 'empty' || 
+                        item.field.endsWith('_damage') || 
+                        item.field.endsWith('_restock')
+                    );
+                    return !hasIssues;
+                });
+            }
+
+            renderReports(filtered);
+        };
+
+        window.exportReportToCSV = function(reportId) {
+            const report = window.allReports.find(r => r.id === reportId);
+            if (!report) return;
+
+            let csv = 'Item,Status,Damaged,Notes\n';
+            
+            report.items.forEach(item => {
+                const name = item.field.replace(/_damage|_notes|_qty|_restock/g, '');
+                const value = item.value;
+                csv += `"${name}","${value}","",""\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `report-${report.unitName}-${report.date}.csv`;
+            a.click();
+        };
+
+        // ADMIN FUNCTIONS
         window.toggleAdminMode = function() {
             if (!window.isAdmin) {
                 const passcode = prompt('Enter admin passcode:');
