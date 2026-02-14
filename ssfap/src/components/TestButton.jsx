@@ -15,6 +15,8 @@
  */
 
 import { useState } from 'react';
+import { signInAnonymously } from 'firebase/auth';
+import { auth } from '../firebase/firebaseConfig';
 import { addBooking } from '../services/firebase/firestoreService';
 
 function TestButton() {
@@ -26,8 +28,14 @@ function TestButton() {
     setMessage('');
 
     try {
-      // Your user ID (hardcoded for now)
-      const userId = 'B52ye9yyQ0QINoHdEe4nH5niDef2';
+      // Firestore requires an authenticated user (Security Rules).
+      // Sign in anonymously so request.auth.uid exists, then write to that user's collection.
+      let user = auth.currentUser;
+      if (!user) {
+        const cred = await signInAnonymously(auth);
+        user = cred.user;
+      }
+      const userId = user.uid;
 
       // Test booking data
       const testBooking = {
@@ -64,7 +72,7 @@ function TestButton() {
       <button
         onClick={handleAddTestBooking}
         disabled={loading}
-        className="w-full px-4 py-3 bg-primary-600 hover:bg-primary-700 disabled:bg-neutral-300 text-white rounded-lg font-medium transition-colors"
+        className="w-full px-4 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-neutral-300 text-white rounded-lg font-medium transition-colors"
       >
         {loading ? 'Adding...' : 'Add Test Booking to Firebase'}
       </button>
