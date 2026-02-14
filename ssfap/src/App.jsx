@@ -22,13 +22,18 @@
  * ============================================================================
  */
 
+import { useState } from 'react';
 import TestButton from './components/TestButton';
-
+import BookingForm from './components/BookingForm';
 
 function App() {
   // ========================================================================
   // MOCK DATA (Will be replaced with Firebase data later)
   // ========================================================================
+
+  // Booking form modal state
+  const [showBookingForm, setShowBookingForm] = useState(false);
+  const [selectedUnit, setSelectedUnit] = useState(null);
   
   const capexReserve = {
     current: 10565,
@@ -104,6 +109,18 @@ function App() {
       case 'danger': return 'text-danger-600';
       default: return 'text-neutral-600';
     }
+  };
+
+  const handleAddBooking = (unitId) => {
+    setSelectedUnit(unitId);
+    setShowBookingForm(true);
+  };
+
+  const handleBookingSuccess = () => {
+    setShowBookingForm(false);
+    setSelectedUnit(null);
+    // Refresh data
+    window.location.reload();
   };
 
   // ========================================================================
@@ -235,8 +252,11 @@ function App() {
                     </span>
                   </div>
                   
-                  <button className="w-full mt-2 px-4 py-2 bg-neutral-100 hover:bg-neutral-200 rounded-lg text-sm font-medium text-neutral-700 transition-colors">
-                    View Details →
+                  <button 
+                    onClick={() => handleAddBooking(unit.id)}
+                    className="w-full mt-2 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg text-sm font-medium transition-colors"
+                  >
+                    + Add Booking
                   </button>
                 </div>
               </div>
@@ -308,9 +328,18 @@ function App() {
             </div>
           </div>
         </div>
-          {/* Test Button - TEMPORARY */}
-          <TestButton />
 
+        {/* Test Button - TEMPORARY */}
+        <TestButton />
+
+        {/* Booking Form Modal */}
+        {showBookingForm && (
+          <BookingForm
+            unitId={selectedUnit}
+            onClose={() => setShowBookingForm(false)}
+            onSuccess={handleBookingSuccess}
+          />
+        )}
       </main>
     </div>
   );
