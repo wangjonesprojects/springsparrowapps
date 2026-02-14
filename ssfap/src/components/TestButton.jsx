@@ -121,7 +121,7 @@ function TestButton() {
 
       {!user ? (
         <>
-          <p className="text-sm text-neutral-600 mb-4">
+          <p className="text-sm text-neutral-600 mb-4 p-[5px]">
             Sign in with Email or Google so test data is saved to your account.
           </p>
           <form onSubmit={handleEmailSignIn} className="space-y-3 mb-4">
@@ -158,7 +158,7 @@ function TestButton() {
         </>
       ) : (
         <>
-          <p className="text-sm text-neutral-600 mb-4">
+          <p className="text-sm text-neutral-600 mb-4 p-[5px]">
             Signed in as <strong>{user.email || user.uid}</strong>
           </p>
           <div className="flex gap-3">
@@ -182,7 +182,7 @@ function TestButton() {
 
       {message && (
         <p
-          className={`mt-5 text-sm ${
+          className={`mt-5 text-sm p-[5px] ${
             message.includes('Success') || message.includes('Signed in')
               ? 'text-success-600'
               : 'text-danger-600'
