@@ -2,14 +2,14 @@
  * ============================================================================
  * SPRING SPARROW FINANCIAL ADVISOR (SSFAP)
  * ============================================================================
- * 
+ *
  * Component: TestButton
  * Version: 1.0.0
  * Last Updated: 2026-02-14
- * 
+ *
  * PURPOSE:
- * Simple test button to verify Firestore connection works. Adds a sample
- * booking to Firebase when clicked. Will be removed once real forms are built.
+ * Simple test card to verify Firestore: sign in with Email or Google, then
+ * add a sample booking to your account. Will be removed once real forms exist.
  *
  * Primary dev user UUID (when signed in with real account, data goes here):
  * B52ye9yyQ0QINoHdEe4nH5niDef2
@@ -17,30 +17,78 @@
  * ============================================================================
  */
 
-import { useState } from 'react';
-import { signInAnonymously } from 'firebase/auth';
+import { useState, useEffect } from 'react';
+import {
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+  signOut,
+  onAuthStateChanged,
+} from 'firebase/auth';
 import { auth } from '../firebase/firebaseConfig';
 import { addBooking } from '../services/firebase/firestoreService';
 
 function TestButton() {
+  const [user, setUser] = useState(auth.currentUser);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (u) => {
+      setUser(u);
+      if (!u) setMessage('');
+    });
+    return () => unsub();
+  }, []);
+
+  const handleEmailSignIn = async (e) => {
+    e.preventDefault();
+    if (!email.trim() || !password) {
+      setMessage('❌ Enter email and password');
+      return;
+    }
+    setLoading(true);
+    setMessage('');
+    try {
+      await signInWithEmailAndPassword(auth, email.trim(), password);
+      setMessage('✅ Signed in');
+    } catch (err) {
+      setMessage(`❌ ${err.message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    setLoading(true);
+    setMessage('');
+    try {
+      await signInWithPopup(auth, new GoogleAuthProvider());
+      setMessage('✅ Signed in with Google');
+    } catch (err) {
+      setMessage(`❌ ${err.message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSignOut = () => {
+    signOut(auth);
+    setMessage('');
+  };
 
   const handleAddTestBooking = async () => {
+    if (!user) {
+      setMessage('❌ Sign in first');
+      return;
+    }
     setLoading(true);
     setMessage('');
 
     try {
-      // Firestore requires an authenticated user (Security Rules).
-      // Sign in anonymously so request.auth.uid exists, then write to that user's collection.
-      let user = auth.currentUser;
-      if (!user) {
-        const cred = await signInAnonymously(auth);
-        user = cred.user;
-      }
       const userId = user.uid;
-
-      // Test booking data
       const testBooking = {
         unitId: 'robins-roost',
         type: 'STR',
@@ -57,7 +105,6 @@ function TestButton() {
 
       const bookingId = await addBooking(userId, testBooking);
       setMessage(`✅ Success! Booking added with ID: ${bookingId}`);
-      console.log('Booking added:', bookingId);
     } catch (error) {
       setMessage(`❌ Error: ${error.message}`);
       console.error('Error adding booking:', error);
@@ -71,19 +118,76 @@ function TestButton() {
       <h2 className="text-lg font-semibold text-neutral-900 mb-4">
         🧪 Firebase Test
       </h2>
-      
-      <button
-        onClick={handleAddTestBooking}
-        disabled={loading}
-        className="w-full px-4 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-neutral-300 text-white rounded-lg font-medium transition-colors"
-      >
-        {loading ? 'Adding...' : 'Add Test Booking to Firebase'}
-      </button>
+
+      {!user ? (
+        <>
+          <p className="text-sm text-neutral-600 mb-3">
+            Sign in with Email or Google so test data is saved to your account.
+          </p>
+          <form onSubmit={handleEmailSignIn} className="space-y-2 mb-3">
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-3 py-2 border border-neutral-300 rounded-lg text-sm"
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-3 py-2 border border-neutral-300 rounded-lg text-sm"
+            />
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full px-4 py-2 bg-neutral-700 hover:bg-neutral-800 disabled:bg-neutral-300 text-white rounded-lg font-medium text-sm"
+            >
+              {loading ? 'Signing in...' : 'Sign in with Email'}
+            </button>
+          </form>
+          <button
+            type="button"
+            onClick={handleGoogleSignIn}
+            disabled={loading}
+            className="w-full px-4 py-2 border border-neutral-300 rounded-lg font-medium text-sm hover:bg-neutral-50"
+          >
+            Sign in with Google
+          </button>
+        </>
+      ) : (
+        <>
+          <p className="text-sm text-neutral-600 mb-3">
+            Signed in as <strong>{user.email || user.uid}</strong>
+          </p>
+          <div className="flex gap-2">
+            <button
+              onClick={handleAddTestBooking}
+              disabled={loading}
+              className="flex-1 px-4 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-neutral-300 text-white rounded-lg font-medium transition-colors"
+            >
+              {loading ? 'Adding...' : 'Add Test Booking to Firebase'}
+            </button>
+            <button
+              type="button"
+              onClick={handleSignOut}
+              className="px-3 py-2 border border-neutral-300 rounded-lg text-sm hover:bg-neutral-50"
+            >
+              Sign out
+            </button>
+          </div>
+        </>
+      )}
 
       {message && (
-        <p className={`mt-3 text-sm ${
-          message.includes('Success') ? 'text-success-600' : 'text-danger-600'
-        }`}>
+        <p
+          className={`mt-3 text-sm ${
+            message.includes('Success') || message.includes('Signed in')
+              ? 'text-success-600'
+              : 'text-danger-600'
+          }`}
+        >
           {message}
         </p>
       )}
