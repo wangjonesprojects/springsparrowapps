@@ -16,65 +16,120 @@
  * Dove's Den, Stadium District). Shows real-time financial position to make
  * strategic decisions: MTR vs STR, when to spend, distribution timing.
  * 
- * DATA STATUS: Currently using fake/mock data from Feb 2026. Will connect
- * to Firebase in future iterations.
- * 
  * ============================================================================
  */
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import TestButton from './components/TestButton';
 import BookingForm from './components/BookingForm';
 import { Home, TrendingUp, Gem, DollarSign, Zap } from 'lucide-react';
+import { getBookingsByMonth, getCurrentMonth } from './services/firebase/firestoreService';
 
 function App() {
   // ========================================================================
-  // MOCK DATA (Will be replaced with Firebase data later)
+  // STATE - Real data from Firebase
   // ========================================================================
-
+  
+  const [bookings, setBookings] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  
   // Booking form modal state
   const [showBookingForm, setShowBookingForm] = useState(false);
   const [selectedUnit, setSelectedUnit] = useState(null);
   
+  // Hardcoded user ID for now (will add auth later)
+  const userId = 'B52ye9yyQ0QINoHdEe4nH5niDef2';
+  const currentMonth = getCurrentMonth();
+  
+  // ========================================================================
+  // FETCH DATA FROM FIREBASE
+  // ========================================================================
+  
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        setLoading(true);
+        
+        // Get current month's bookings
+        const monthBookings = await getBookingsByMonth(userId, currentMonth);
+        setBookings(monthBookings);
+        
+        console.log('Loaded bookings:', monthBookings);
+      } catch (err) {
+        console.error('Error loading data:', err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+    
+    fetchData();
+  }, [userId, currentMonth]);
+  
+  // ========================================================================
+  // CALCULATE METRICS FROM REAL DATA
+  // ========================================================================
+  
+  // Calculate total income from bookings
+  const totalIncome = bookings.reduce((sum, booking) => sum + booking.netIncome, 0);
+  
+  // Count nights by unit
+  const unitNights = bookings.reduce((acc, booking) => {
+    if (!acc[booking.unitId]) acc[booking.unitId] = 0;
+    acc[booking.unitId] += booking.nights;
+    return acc;
+  }, {});
+  
+  // ========================================================================
+  // MOCK DATA (still using for some metrics until we build more)
+  // ========================================================================
+  
   const capexReserve = {
     current: 0,
     target: 20000,
-    percentage: 0, // (0 / 20000) * 100
+    percentage: 0,
   };
   
   const monthlyIncome = {
-    current: 0,
-    target: 10000,
-    percentage: 0,
+    current: totalIncome,
+    target: 11721,
+    percentage: Math.round((totalIncome / 11721) * 100),
   };
   
   const units = [
     {
       id: 'robins-roost',
       name: "Robin's Roost",
-      emoji: '🏡',
-      nights: 0,
-      target: 0,
-      netIncome: 0,
-      status: 'warning', // behind target
+      image: '/assets/robinsroost_thumbnail.png',
+      nights: unitNights['robins-roost'] || 0,
+      target: 15,
+      netIncome: bookings
+        .filter(b => b.unitId === 'robins-roost')
+        .reduce((sum, b) => sum + b.netIncome, 0),
+      status: (unitNights['robins-roost'] || 0) >= 15 ? 'success' : 'warning',
     },
     {
       id: 'doves-den',
       name: "Dove's Den",
-      emoji: '🕊️',
-      nights: 0,
-      target: 0,
-      netIncome: 0,
-      status: 'success', // on track
+      image: '/assets/doveden_thumbnail.png',
+      nights: unitNights['doves-den'] || 0,
+      target: 15,
+      netIncome: bookings
+        .filter(b => b.unitId === 'doves-den')
+        .reduce((sum, b) => sum + b.netIncome, 0),
+      status: (unitNights['doves-den'] || 0) >= 15 ? 'success' : 'warning',
     },
     {
-      id: 'stadium',
+      id: 'stadium-district',
       name: 'Stadium District',
-      emoji: '🏟️',
-      nights: 0,
-      target: 0,
-      netIncome: 0,
-      status: 'warning', // MTR search active
+      image: '/assets/stadiumdistrict_thumbnail.png',
+      nights: unitNights['stadium-district'] || 0,
+      target: 18,
+      netIncome: bookings
+        .filter(b => b.unitId === 'stadium-district')
+        .reduce((sum, b) => sum + b.netIncome, 0),
+      status: (unitNights['stadium-district'] || 0) >= 18 ? 'success' : 'warning',
     },
   ];
   
@@ -85,9 +140,9 @@ function App() {
   };
   
   const actionItems = [
-    { text: 'Push Robin bookings', priority: 'high' },
-    { text: 'Stadium MTR decision', priority: 'high' },
-    { text: 'Electrical repair pending', priority: 'medium' },
+    { text: 'Enter January 2026 bookings', priority: 'high' },
+    { text: 'Enter February 2026 bookings', priority: 'high' },
+    { text: 'Enter March 2026 bookings', priority: 'high' },
   ];
 
   // ========================================================================
@@ -125,6 +180,33 @@ function App() {
   };
 
   // ========================================================================
+  // LOADING & ERROR STATES
+  // ========================================================================
+  
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-neutral-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-4xl mb-4">🔄</div>
+          <p className="text-neutral-600">Loading your financial data...</p>
+        </div>
+      </div>
+    );
+  }
+  
+  if (error) {
+    return (
+      <div className="min-h-screen bg-neutral-50 flex items-center justify-center">
+        <div className="text-center max-w-md">
+          <div className="text-4xl mb-4">⚠️</div>
+          <p className="text-danger-600 font-semibold mb-2">Error loading data</p>
+          <p className="text-neutral-600 text-sm">{error}</p>
+        </div>
+      </div>
+    );
+  }
+
+  // ========================================================================
   // RENDER
   // ========================================================================
   
@@ -134,9 +216,9 @@ function App() {
       <header className="bg-white border-b border-neutral-200 px-4 py-4">
         <div className="max-w-7xl mx-auto">
           <h1 className="text-2xl font-bold text-neutral-900">
-            Spring Sparrow, LLC
+            Spring Sparrow
           </h1>
-          <p className="text-sm text-neutral-600 mt-1">Jan 2026</p>
+          <p className="text-sm text-neutral-600 mt-1">March 2026</p>
         </div>
       </header>
 
@@ -149,7 +231,7 @@ function App() {
           {/* CapEx Reserve Card */}
           <div className="bg-white rounded-xl shadow-sm p-6 border border-neutral-200">
             <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2">
                 <Gem className="w-5 h-5 text-primary-600" />
                 <h2 className="text-lg font-semibold text-neutral-900">
                   CapEx Reserve
@@ -179,7 +261,7 @@ function App() {
               </div>
               
               <p className="text-sm text-neutral-600">
-                {capexReserve.percentage}% • Target: Dec 31, 2026
+                {capexReserve.percentage}% • Target: May 1
               </p>
             </div>
           </div>
@@ -187,10 +269,10 @@ function App() {
           {/* Monthly Income Card */}
           <div className="bg-white rounded-xl shadow-sm p-6 border border-neutral-200">
             <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2">
                 <TrendingUp className="w-5 h-5 text-primary-600" />
                 <h2 className="text-lg font-semibold text-neutral-900">
-                  Jan Net Income
+                  March Net Income
                 </h2>
               </div>
               <span className="text-sm text-warning-600 font-medium">
@@ -217,7 +299,7 @@ function App() {
               </div>
               
               <p className="text-sm text-neutral-600">
-                {monthlyIncome.percentage}% • Need $0/day • 0 days left
+                {monthlyIncome.percentage}% • Need $217/day • 16 days left
               </p>
             </div>
           </div>
@@ -225,7 +307,7 @@ function App() {
 
         {/* Units Performance */}
         <div>
-        <div className="flex items-center gap-2 mb-4">
+          <div className="flex items-center gap-2 mb-4">
             <Home className="w-5 h-5 text-primary-600" />
             <h2 className="text-lg font-semibold text-neutral-900">
               Unit Performance
@@ -236,38 +318,47 @@ function App() {
             {units.map(unit => (
               <div 
                 key={unit.id}
-                className="bg-white rounded-xl shadow-sm p-6 border border-neutral-200"
+                className="bg-white rounded-xl shadow-sm overflow-hidden border border-neutral-200"
               >
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-2">
-                    <span className="text-2xl">{unit.emoji}</span>
-                    <h3 className="font-semibold text-neutral-900">
+                {/* Unit Image */}
+                <div className="relative h-48 bg-neutral-100">
+                  <img 
+                    src={unit.image} 
+                    alt={unit.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                
+                {/* Unit Info */}
+                <div className="p-6">
+                  <div className="mb-4">
+                    <h3 className="text-lg font-semibold text-neutral-900">
                       {unit.name}
                     </h3>
                   </div>
-                </div>
-                
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-neutral-600">Nights</span>
-                    <span className={`font-semibold ${getStatusColor(unit.status)}`}>
-                      {unit.nights} / {unit.target}
-                    </span>
-                  </div>
                   
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-neutral-600">Net Income</span>
-                    <span className={`font-semibold ${unit.netIncome >= 0 ? 'text-success-600' : 'text-danger-600'}`}>
-                      {formatCurrency(unit.netIncome)}
-                    </span>
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-neutral-600">Nights</span>
+                      <span className={`font-semibold ${getStatusColor(unit.status)}`}>
+                        {unit.nights} / {unit.target}
+                      </span>
+                    </div>
+                    
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-neutral-600">Net Income</span>
+                      <span className={`font-semibold ${unit.netIncome >= 0 ? 'text-success-600' : 'text-danger-600'}`}>
+                        {formatCurrency(unit.netIncome)}
+                      </span>
+                    </div>
+                    
+                    <button 
+                      onClick={() => handleAddBooking(unit.id)}
+                      className="w-full mt-2 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg text-sm font-medium transition-colors"
+                    >
+                      + Add Booking
+                    </button>
                   </div>
-                  
-                  <button
-                    onClick={() => handleAddBooking(unit.id)}
-                    className="w-full mt-2 px-4 py-2 bg-blue-100 border-2 border-blue-600 text-blue-900 hover:bg-blue-200 rounded-lg text-sm font-medium transition-colors"
-                  >
-                    + Add Booking
-                  </button>
                 </div>
               </div>
             ))}
@@ -279,7 +370,7 @@ function App() {
           
           {/* Distributions */}
           <div className="bg-white rounded-xl shadow-sm p-6 border border-neutral-200">
-          <div className="flex items-center gap-2 mb-4">
+            <div className="flex items-center gap-2 mb-4">
               <DollarSign className="w-5 h-5 text-primary-600" />
               <h2 className="text-lg font-semibold text-neutral-900">
                 Owner Distributions
@@ -309,7 +400,7 @@ function App() {
                 </div>
               </div>
               
-              <button className="w-full mt-2 px-4 py-3 bg-blue-100 border-2 border-blue-600 text-blue-900 hover:bg-blue-200 rounded-lg font-medium transition-colors">
+              <button className="w-full mt-2 px-4 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium transition-colors">
                 Distribute Now
               </button>
             </div>
@@ -317,7 +408,7 @@ function App() {
           
           {/* Action Items */}
           <div className="bg-white rounded-xl shadow-sm p-6 border border-neutral-200">
-          <div className="flex items-center gap-2 mb-4">
+            <div className="flex items-center gap-2 mb-4">
               <Zap className="w-5 h-5 text-primary-600" />
               <h2 className="text-lg font-semibold text-neutral-900">
                 Action Items
