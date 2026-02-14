@@ -25,6 +25,7 @@
 import { useState } from 'react';
 import TestButton from './components/TestButton';
 import BookingForm from './components/BookingForm';
+import { Home, TrendingUp, Gem, DollarSign, Zap } from 'lucide-react';
 
 function App() {
   // ========================================================================
@@ -148,9 +149,12 @@ function App() {
           {/* CapEx Reserve Card */}
           <div className="bg-white rounded-xl shadow-sm p-6 border border-neutral-200">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-neutral-900">
-                💎 CapEx Reserve
-              </h2>
+            <div className="flex items-center gap-2">
+                <Gem className="w-5 h-5 text-primary-600" />
+                <h2 className="text-lg font-semibold text-neutral-900">
+                  CapEx Reserve
+                </h2>
+              </div>
               <span className="text-sm text-success-600 font-medium">
                 On track
               </span>
@@ -183,9 +187,12 @@ function App() {
           {/* Monthly Income Card */}
           <div className="bg-white rounded-xl shadow-sm p-6 border border-neutral-200">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-neutral-900">
-                📊 Jan Net Income
-              </h2>
+            <div className="flex items-center gap-2">
+                <TrendingUp className="w-5 h-5 text-primary-600" />
+                <h2 className="text-lg font-semibold text-neutral-900">
+                  Jan Net Income
+                </h2>
+              </div>
               <span className="text-sm text-warning-600 font-medium">
                 Behind pace
               </span>
@@ -218,9 +225,12 @@ function App() {
 
         {/* Units Performance */}
         <div>
-          <h2 className="text-lg font-semibold text-neutral-900 mb-4">
-            🏠 Unit Performance
-          </h2>
+        <div className="flex items-center gap-2 mb-4">
+            <Home className="w-5 h-5 text-primary-600" />
+            <h2 className="text-lg font-semibold text-neutral-900">
+              Unit Performance
+            </h2>
+          </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {units.map(unit => (
@@ -269,9 +279,12 @@ function App() {
           
           {/* Distributions */}
           <div className="bg-white rounded-xl shadow-sm p-6 border border-neutral-200">
-            <h2 className="text-lg font-semibold text-neutral-900 mb-4">
-              💰 Owner Distributions
-            </h2>
+          <div className="flex items-center gap-2 mb-4">
+              <DollarSign className="w-5 h-5 text-primary-600" />
+              <h2 className="text-lg font-semibold text-neutral-900">
+                Owner Distributions
+              </h2>
+            </div>
             
             <div className="space-y-3">
               <div className="bg-success-50 border border-success-200 rounded-lg p-4">
@@ -304,9 +317,12 @@ function App() {
           
           {/* Action Items */}
           <div className="bg-white rounded-xl shadow-sm p-6 border border-neutral-200">
-            <h2 className="text-lg font-semibold text-neutral-900 mb-4">
-              ⚡ Action Items
-            </h2>
+          <div className="flex items-center gap-2 mb-4">
+              <Zap className="w-5 h-5 text-primary-600" />
+              <h2 className="text-lg font-semibold text-neutral-900">
+                Action Items
+              </h2>
+            </div>
             
             <div className="space-y-3">
               {actionItems.map((item, index) => (
