@@ -22,6 +22,9 @@
  * ============================================================================
  */
 
+import TestButton from './components/TestButton';
+
+
 function App() {
   // ========================================================================
   // MOCK DATA (Will be replaced with Firebase data later)
@@ -305,6 +308,9 @@ function App() {
             </div>
           </div>
         </div>
+          {/* Test Button - TEMPORARY */}
+          <TestButton />
+
       </main>
     </div>
   );
