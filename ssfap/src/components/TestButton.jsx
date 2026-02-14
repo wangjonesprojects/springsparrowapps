@@ -4,7 +4,7 @@
  * ============================================================================
  *
  * Component: TestButton
- * Version: 2.1.0
+ * Version: 2.2.0 - FINAL
  * Last Updated: 2026-02-15
  *
  * PURPOSE:
@@ -86,18 +86,20 @@ function TestButton() {
 
     try {
       const userId = user.uid;
+      const currentMonth = new Date().toISOString().slice(0, 7);
+      
       const testBooking = {
         unitId: 'robins-roost',
         type: 'STR',
-        checkIn: new Date('2026-01-15'),
-        checkOut: new Date('2026-01-18'),
+        checkIn: new Date('2026-02-15'),
+        checkOut: new Date('2026-02-18'),
         nights: 3,
         grossPayout: 450,
         platform: 'Airbnb',
         platformFee: 67.50,
         cleaningCost: 150,
         netIncome: 232.50,
-        month: '2026-01',
+        month: currentMonth,
       };
 
       const bookingId = await addBooking(userId, testBooking);
@@ -157,56 +159,58 @@ function TestButton() {
 
     try {
       const userId = user.uid;
+      const currentMonth = new Date().toISOString().slice(0, 7); // Gets current month like '2026-02'
       
       console.log('🎬 Starting mock data load...');
+      console.log('📅 Current month:', currentMonth);
       
-      // HARDCODED MOCK DATA
+      // HARDCODED MOCK DATA - using current month
       const mockBookings = [
         {
           unitId: 'robins-roost',
           type: 'STR',
-          checkIn: new Date('2026-01-03'),
-          checkOut: new Date('2026-01-06'),
+          checkIn: new Date('2026-02-03'),
+          checkOut: new Date('2026-02-06'),
           nights: 3,
           grossPayout: 420,
           platform: 'Airbnb',
           platformFee: 63,
           cleaningCost: 150,
           netIncome: 207,
-          month: '2026-01',
+          month: currentMonth,
         },
         {
           unitId: 'robins-roost',
           type: 'STR',
-          checkIn: new Date('2026-01-10'),
-          checkOut: new Date('2026-01-14'),
+          checkIn: new Date('2026-02-10'),
+          checkOut: new Date('2026-02-14'),
           nights: 4,
           grossPayout: 560,
           platform: 'Vrbo',
           platformFee: 84,
           cleaningCost: 150,
           netIncome: 326,
-          month: '2026-01',
+          month: currentMonth,
         },
         {
           unitId: 'robins-roost',
           type: 'STR',
-          checkIn: new Date('2026-01-20'),
-          checkOut: new Date('2026-01-25'),
+          checkIn: new Date('2026-02-20'),
+          checkOut: new Date('2026-02-25'),
           nights: 5,
           grossPayout: 700,
           platform: 'Airbnb',
           platformFee: 105,
           cleaningCost: 150,
           netIncome: 445,
-          month: '2026-01',
+          month: currentMonth,
         },
         {
           unitId: 'doves-den',
           type: 'MTR',
-          checkIn: new Date('2026-01-01'),
-          checkOut: new Date('2026-01-31'),
-          nights: 30,
+          checkIn: new Date('2026-02-01'),
+          checkOut: new Date('2026-02-28'),
+          nights: 27,
           grossPayout: 2400,
           platform: 'Furnished Finder',
           platformFee: 240,
@@ -219,33 +223,33 @@ function TestButton() {
           petFeePerMonth: 50,
           petDeposit: 250,
           securityDeposit: 500,
-          month: '2026-01',
+          month: currentMonth,
         },
         {
           unitId: 'stadium-district',
           type: 'STR',
-          checkIn: new Date('2026-01-08'),
-          checkOut: new Date('2026-01-11'),
+          checkIn: new Date('2026-02-08'),
+          checkOut: new Date('2026-02-11'),
           nights: 3,
           grossPayout: 390,
           platform: 'Airbnb',
           platformFee: 58.50,
           cleaningCost: 150,
           netIncome: 181.50,
-          month: '2026-01',
+          month: currentMonth,
         },
         {
           unitId: 'stadium-district',
           type: 'STR',
-          checkIn: new Date('2026-01-15'),
-          checkOut: new Date('2026-01-25'),
+          checkIn: new Date('2026-02-15'),
+          checkOut: new Date('2026-02-25'),
           nights: 10,
           grossPayout: 1300,
           platform: 'Airbnb',
           platformFee: 195,
           cleaningCost: 150,
           netIncome: 955,
-          month: '2026-01',
+          month: currentMonth,
         },
       ];
 
