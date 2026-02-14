@@ -245,10 +245,10 @@ function BookingForm({ unitId, onClose, onSuccess }) {
               <button
                 type="button"
                 onClick={() => setBookingType('STR')}
-                className={`flex-1 px-4 py-3 rounded-lg font-medium transition-colors ${
+                className={`flex-1 px-4 py-3 rounded-lg font-medium transition-colors border-2 ${
                   bookingType === 'STR'
-                    ? 'bg-primary-600 text-white'
-                    : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
+                    ? 'bg-blue-100 border-blue-600 text-blue-900'
+                    : 'bg-neutral-100 border-neutral-300 text-neutral-700 hover:bg-neutral-200'
                 }`}
               >
                 STR (Short-Term)
@@ -256,10 +256,10 @@ function BookingForm({ unitId, onClose, onSuccess }) {
               <button
                 type="button"
                 onClick={() => setBookingType('MTR')}
-                className={`flex-1 px-4 py-3 rounded-lg font-medium transition-colors ${
+                className={`flex-1 px-4 py-3 rounded-lg font-medium transition-colors border-2 ${
                   bookingType === 'MTR'
-                    ? 'bg-primary-600 text-white'
-                    : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
+                    ? 'bg-blue-100 border-blue-600 text-blue-900'
+                    : 'bg-neutral-100 border-neutral-300 text-neutral-700 hover:bg-neutral-200'
                 }`}
               >
                 MTR (Medium-Term)
@@ -580,14 +580,14 @@ function BookingForm({ unitId, onClose, onSuccess }) {
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-4 py-3 bg-neutral-100 hover:bg-neutral-200 text-neutral-700 rounded-lg font-medium transition-colors"
+              className="flex-1 px-4 py-3 bg-neutral-100 border-2 border-neutral-300 text-neutral-700 hover:bg-neutral-200 rounded-lg font-medium transition-colors"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 px-4 py-3 bg-primary-600 hover:bg-primary-700 disabled:bg-neutral-300 text-white rounded-lg font-medium transition-colors"
+              className="flex-1 px-4 py-3 bg-blue-100 border-2 border-blue-600 text-blue-900 hover:bg-blue-200 disabled:bg-neutral-100 disabled:border-neutral-300 disabled:text-neutral-500 rounded-lg font-medium transition-colors"
             >
               {loading ? 'Saving...' : 'Save Booking'}
             </button>

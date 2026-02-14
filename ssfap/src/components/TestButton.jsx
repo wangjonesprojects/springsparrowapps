@@ -142,7 +142,7 @@ function TestButton() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full px-4 py-2 bg-neutral-700 hover:bg-neutral-800 disabled:bg-neutral-300 text-white rounded-lg font-medium text-sm"
+              className="w-full px-4 py-2 bg-blue-100 border-2 border-blue-600 text-blue-900 hover:bg-blue-200 disabled:bg-neutral-100 disabled:border-neutral-300 disabled:text-neutral-500 rounded-lg font-medium text-sm transition-colors"
             >
               {loading ? 'Signing in...' : 'Sign in with Email'}
             </button>
@@ -151,7 +151,7 @@ function TestButton() {
             type="button"
             onClick={handleGoogleSignIn}
             disabled={loading}
-            className="w-full px-4 py-2 border border-neutral-300 rounded-lg font-medium text-sm hover:bg-neutral-50"
+            className="w-full px-4 py-2 bg-blue-100 border-2 border-blue-600 text-blue-900 hover:bg-blue-200 rounded-lg font-medium text-sm transition-colors"
           >
             Sign in with Google
           </button>
@@ -165,14 +165,14 @@ function TestButton() {
             <button
               onClick={handleAddTestBooking}
               disabled={loading}
-              className="flex-1 px-4 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-neutral-300 text-white rounded-lg font-medium transition-colors"
+              className="flex-1 px-4 py-3 bg-blue-100 border-2 border-blue-600 text-blue-900 hover:bg-blue-200 disabled:bg-neutral-100 disabled:border-neutral-300 disabled:text-neutral-500 rounded-lg font-medium transition-colors"
             >
               {loading ? 'Adding...' : 'Add Test Booking to Firebase'}
             </button>
             <button
               type="button"
               onClick={handleSignOut}
-              className="px-3 py-2 border border-neutral-300 rounded-lg text-sm hover:bg-neutral-50"
+              className="px-3 py-2 bg-blue-100 border-2 border-blue-600 text-blue-900 hover:bg-blue-200 rounded-lg text-sm font-medium transition-colors"
             >
               Sign out
             </button>

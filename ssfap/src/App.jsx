@@ -252,9 +252,9 @@ function App() {
                     </span>
                   </div>
                   
-                  <button 
+                  <button
                     onClick={() => handleAddBooking(unit.id)}
-                    className="w-full mt-2 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg text-sm font-medium transition-colors"
+                    className="w-full mt-2 px-4 py-2 bg-blue-100 border-2 border-blue-600 text-blue-900 hover:bg-blue-200 rounded-lg text-sm font-medium transition-colors"
                   >
                     + Add Booking
                   </button>
@@ -296,7 +296,7 @@ function App() {
                 </div>
               </div>
               
-              <button className="w-full mt-2 px-4 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium transition-colors">
+              <button className="w-full mt-2 px-4 py-3 bg-blue-100 border-2 border-blue-600 text-blue-900 hover:bg-blue-200 rounded-lg font-medium transition-colors">
                 Distribute Now
               </button>
             </div>
