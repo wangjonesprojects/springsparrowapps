@@ -150,9 +150,9 @@ function App() {
   };
   
   const actionItems = [
-    { text: 'Enter January 2026 bookings', priority: 'high' },
-    { text: 'Enter February 2026 bookings', priority: 'high' },
-    { text: 'Enter March 2026 bookings', priority: 'high' },
+    { text: 'Push Robin bookings', priority: 'high' },
+    { text: 'Stadium MTR decision', priority: 'medium' },
+    { text: 'Electrical repair pending', priority: 'low' },
   ];
 
   // ========================================================================

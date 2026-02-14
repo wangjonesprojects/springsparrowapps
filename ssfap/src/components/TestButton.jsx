@@ -4,15 +4,12 @@
  * ============================================================================
  *
  * Component: TestButton
- * Version: 1.0.0
- * Last Updated: 2026-02-14
+ * Version: 2.0.0
+ * Last Updated: 2026-02-15
  *
  * PURPOSE:
- * Simple test card to verify Firestore: sign in with Email or Google, then
- * add a sample booking to your account. Will be removed once real forms exist.
- *
- * Primary dev user UUID (when signed in with real account, data goes here):
- * B52ye9yyQ0QINoHdEe4nH5niDef2
+ * Firebase test card with sign-in, test booking, reset data, and DEMO MODE.
+ * Demo mode loads realistic mock data to show Tie how the app will work.
  *
  * ============================================================================
  */
@@ -25,8 +22,8 @@ import {
   signOut,
   onAuthStateChanged,
 } from 'firebase/auth';
-import { auth } from '../firebase/firebaseConfig';
-import { addBooking, deleteAllBookings } from '../services/firebase/firestoreService';
+import { auth } from '../firebase/firebaseConfig.js';
+import { addBooking, deleteAllBookings } from '../services/firebase/firestoreService.js';
 
 function TestButton() {
   const [user, setUser] = useState(auth.currentUser);
@@ -92,15 +89,15 @@ function TestButton() {
       const testBooking = {
         unitId: 'robins-roost',
         type: 'STR',
-        checkIn: new Date('2026-03-15'),
-        checkOut: new Date('2026-03-18'),
+        checkIn: new Date('2026-01-15'),
+        checkOut: new Date('2026-01-18'),
         nights: 3,
         grossPayout: 450,
         platform: 'Airbnb',
         platformFee: 67.50,
         cleaningCost: 150,
         netIncome: 232.50,
-        month: '2026-03',
+        month: '2026-01',
       };
 
       const bookingId = await addBooking(userId, testBooking);
@@ -132,13 +129,161 @@ function TestButton() {
       const count = await deleteAllBookings(user.uid);
       setMessage(`✅ Deleted ${count} bookings. Refreshing...`);
       
-      // Auto-refresh after 2 seconds
       setTimeout(() => {
         window.location.reload();
       }, 2000);
     } catch (error) {
       setMessage(`❌ Error: ${error.message}`);
       console.error('Error resetting data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleLoadMockData = async () => {
+    if (!user) {
+      setMessage('❌ Sign in first');
+      return;
+    }
+
+    const confirmed = window.confirm(
+      '🎬 DEMO MODE\n\nThis will load realistic mock data to show Tie how the app works!\n\nContinue?'
+    );
+    
+    if (!confirmed) return;
+
+    setLoading(true);
+    setMessage('Loading demo data...');
+
+    try {
+      const userId = user.uid;
+      
+      // Mock bookings - realistic January 2026 data
+      const mockBookings = [
+        // Robin's Roost - 12 nights
+        {
+          unitId: 'robins-roost',
+          type: 'STR',
+          checkIn: new Date('2026-01-03'),
+          checkOut: new Date('2026-01-06'),
+          nights: 3,
+          grossPayout: 420,
+          platform: 'Airbnb',
+          platformFee: 63,
+          cleaningCost: 150,
+          netIncome: 207,
+          month: '2026-01',
+        },
+        {
+          unitId: 'robins-roost',
+          type: 'STR',
+          checkIn: new Date('2026-01-10'),
+          checkOut: new Date('2026-01-14'),
+          nights: 4,
+          grossPayout: 560,
+          platform: 'Vrbo',
+          platformFee: 84,
+          cleaningCost: 150,
+          netIncome: 326,
+          month: '2026-01',
+        },
+        {
+          unitId: 'robins-roost',
+          type: 'STR',
+          checkIn: new Date('2026-01-20'),
+          checkOut: new Date('2026-01-25'),
+          nights: 5,
+          grossPayout: 700,
+          platform: 'Airbnb',
+          platformFee: 105,
+          cleaningCost: 150,
+          netIncome: 445,
+          month: '2026-01',
+        },
+        
+        // Dove's Den - 18 nights
+        {
+          unitId: 'doves-den',
+          type: 'STR',
+          checkIn: new Date('2026-01-05'),
+          checkOut: new Date('2026-01-09'),
+          nights: 4,
+          grossPayout: 600,
+          platform: 'Airbnb',
+          platformFee: 90,
+          cleaningCost: 150,
+          netIncome: 360,
+          month: '2026-01',
+        },
+        {
+          unitId: 'doves-den',
+          type: 'STR',
+          checkIn: new Date('2026-01-12'),
+          checkOut: new Date('2026-01-19'),
+          nights: 7,
+          grossPayout: 1050,
+          platform: 'Airbnb',
+          platformFee: 157.50,
+          cleaningCost: 150,
+          netIncome: 742.50,
+          month: '2026-01',
+        },
+        {
+          unitId: 'doves-den',
+          type: 'STR',
+          checkIn: new Date('2026-01-22'),
+          checkOut: new Date('2026-01-29'),
+          nights: 7,
+          grossPayout: 1050,
+          platform: 'Vrbo',
+          platformFee: 157.50,
+          cleaningCost: 150,
+          netIncome: 742.50,
+          month: '2026-01',
+        },
+        
+        // Stadium District - 13 nights
+        {
+          unitId: 'stadium-district',
+          type: 'STR',
+          checkIn: new Date('2026-01-08'),
+          checkOut: new Date('2026-01-11'),
+          nights: 3,
+          grossPayout: 390,
+          platform: 'Airbnb',
+          platformFee: 58.50,
+          cleaningCost: 150,
+          netIncome: 181.50,
+          month: '2026-01',
+        },
+        {
+          unitId: 'stadium-district',
+          type: 'STR',
+          checkIn: new Date('2026-01-15'),
+          checkOut: new Date('2026-01-25'),
+          nights: 10,
+          grossPayout: 1300,
+          platform: 'Airbnb',
+          platformFee: 195,
+          cleaningCost: 150,
+          netIncome: 955,
+          month: '2026-01',
+        },
+      ];
+
+      // Add all mock bookings
+      for (const booking of mockBookings) {
+        await addBooking(userId, booking);
+      }
+
+      setMessage(`✅ Demo data loaded! ${mockBookings.length} bookings added. Refreshing...`);
+      
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
+    } catch (error) {
+      setMessage(`❌ Error: ${error.message}`);
+      console.error('Error loading mock data:', error);
     } finally {
       setLoading(false);
     }
@@ -202,6 +347,15 @@ function TestButton() {
               {loading ? 'Adding...' : 'Add Test Booking to Firebase'}
             </button>
 
+            {/* Load Mock Data Button - NEW! */}
+            <button
+              onClick={handleLoadMockData}
+              disabled={loading}
+              className="w-full px-5 py-3.5 bg-green-100 border-2 border-green-600 text-green-900 hover:bg-green-200 disabled:bg-neutral-100 disabled:border-neutral-300 disabled:text-neutral-500 rounded-lg font-medium transition-colors"
+            >
+              {loading ? 'Loading...' : '🎬 Load Mock Data (Demo for Tie)'}
+            </button>
+
             {/* Reset All Bookings Button */}
             <button
               onClick={handleResetData}
@@ -226,7 +380,7 @@ function TestButton() {
       {message && (
         <p
           className={`mt-[30px] text-sm p-[5px] ${
-            message.includes('Success') || message.includes('Signed in') || message.includes('Deleted')
+            message.includes('Success') || message.includes('Signed in') || message.includes('Deleted') || message.includes('Demo data')
               ? 'text-success-600'
               : 'text-danger-600'
           }`}
