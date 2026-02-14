@@ -1,3 +1,23 @@
+# ============================================================================
+# SPRING SPARROW FINANCIAL ADVISOR (SSFAP)
+# ============================================================================
+# 
+# File: .gitignore
+# Version: 1.0.0
+# Last Updated: 2026-02-14
+# 
+# PURPOSE:
+# Tells Git which files to never commit to GitHub. Critical for security
+# (prevents exposing Firebase keys, API secrets) and cleanliness (no build
+# artifacts, dependency folders).
+# 
+# BUSINESS CONTEXT:
+# This app handles sensitive financial data. Firebase credentials, if exposed,
+# could allow unauthorized access to your business data. .env files contain
+# these credentials and must NEVER be committed.
+# 
+# ============================================================================
+
 # Logs
 logs
 *.log
@@ -7,6 +27,7 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies
 node_modules
 dist
 dist-ssr
@@ -22,3 +43,65 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# ============================================================================
+# FIREBASE SECURITY (CRITICAL - DO NOT REMOVE)
+# ============================================================================
+
+# Environment variables containing Firebase credentials
+# NEVER commit these files - they contain API keys and project IDs
+.env
+.env.local
+.env.production
+.env.development
+.env.*.local
+
+# Firebase cache and config
+.firebase/
+.firebaserc
+firebase-debug.log
+firebase-debug.*.log
+
+# ============================================================================
+# BUILD ARTIFACTS
+# ============================================================================
+
+# Vite build output
+dist/
+build/
+
+# Test coverage
+coverage/
+
+# ============================================================================
+# OPERATING SYSTEM FILES
+# ============================================================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ============================================================================
+# WHAT'S INCLUDED IN GIT (NOT IGNORED)
+# ============================================================================
+# 
+# These files ARE committed:
+# - Source code (src/)
+# - Package configs (package.json, vite.config.js)
+# - README and documentation
+# - Public assets
+# 
+# These files are NEVER committed:
+# - .env files (contain secrets)
+# - node_modules (can reinstall with npm install)
+# - Build output (generated from source)
+# - Editor settings (personal preferences)
+# 
+# ============================================================================
