@@ -280,3 +280,35 @@ import {
    * 
    * ============================================================================
    */
+
+  /**
+ * DELETE ALL BOOKINGS (for testing/reset purposes)
+ * 
+ * WARNING: This permanently deletes all booking data!
+ * Use only when resetting to start fresh with real data.
+ * 
+ * @param {string} userId - Current user's ID
+ * @returns {Promise<number>} Number of bookings deleted
+ */
+export async function deleteAllBookings(userId) {
+    try {
+      const bookingsRef = collection(db, 'users', userId, 'bookings');
+      const snapshot = await getDocs(bookingsRef);
+      
+      let deleteCount = 0;
+      const deletePromises = [];
+      
+      snapshot.docs.forEach(doc => {
+        deletePromises.push(deleteDoc(doc.ref));
+        deleteCount++;
+      });
+      
+      await Promise.all(deletePromises);
+      
+      console.log(`Deleted ${deleteCount} bookings`);
+      return deleteCount;
+    } catch (error) {
+      console.error('Error deleting bookings:', error);
+      throw error;
+    }
+  }
