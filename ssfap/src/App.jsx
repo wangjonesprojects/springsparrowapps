@@ -36,15 +36,15 @@ function App() {
   const [selectedUnit, setSelectedUnit] = useState(null);
   
   const capexReserve = {
-    current: 10565,
+    current: 0,
     target: 20000,
-    percentage: 53, // (10565 / 20000) * 100
+    percentage: 0, // (0 / 20000) * 100
   };
   
   const monthlyIncome = {
-    current: 8247,
-    target: 11721,
-    percentage: 70,
+    current: 0,
+    target: 10000,
+    percentage: 0,
   };
   
   const units = [
@@ -52,41 +52,41 @@ function App() {
       id: 'robins-roost',
       name: "Robin's Roost",
       emoji: '🏡',
-      nights: 12,
-      target: 15,
-      netIncome: 1560,
+      nights: 0,
+      target: 0,
+      netIncome: 0,
       status: 'warning', // behind target
     },
     {
       id: 'doves-den',
       name: "Dove's Den",
       emoji: '🕊️',
-      nights: 18,
-      target: 15,
-      netIncome: 2700,
+      nights: 0,
+      target: 0,
+      netIncome: 0,
       status: 'success', // on track
     },
     {
       id: 'stadium',
       name: 'Stadium District',
       emoji: '🏟️',
-      nights: 13,
-      target: 18,
-      netIncome: -350,
+      nights: 0,
+      target: 0,
+      netIncome: 0,
       status: 'warning', // MTR search active
     },
   ];
   
   const distributions = {
-    total: 4689,
-    keeya: 2344,
-    tie: 2345,
+    total: 0,
+    keeya: 0,
+    tie: 0,
   };
   
   const actionItems = [
     { text: 'Push Robin bookings', priority: 'high' },
-    { text: 'Stadium MTR decision', priority: 'medium' },
-    { text: 'Electrical repair pending', priority: 'low' },
+    { text: 'Stadium MTR decision', priority: 'high' },
+    { text: 'Electrical repair pending', priority: 'medium' },
   ];
 
   // ========================================================================
@@ -133,9 +133,9 @@ function App() {
       <header className="bg-white border-b border-neutral-200 px-4 py-4">
         <div className="max-w-7xl mx-auto">
           <h1 className="text-2xl font-bold text-neutral-900">
-            Spring Sparrow
+            Spring Sparrow, LLC
           </h1>
-          <p className="text-sm text-neutral-600 mt-1">March 2026</p>
+          <p className="text-sm text-neutral-600 mt-1">Jan 2026</p>
         </div>
       </header>
 
@@ -175,7 +175,7 @@ function App() {
               </div>
               
               <p className="text-sm text-neutral-600">
-                {capexReserve.percentage}% • Target: May 1
+                {capexReserve.percentage}% • Target: Dec 1
               </p>
             </div>
           </div>
@@ -184,7 +184,7 @@ function App() {
           <div className="bg-white rounded-xl shadow-sm p-6 border border-neutral-200">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-neutral-900">
-                📊 March Net Income
+                📊 Jan Net Income
               </h2>
               <span className="text-sm text-warning-600 font-medium">
                 Behind pace
@@ -210,7 +210,7 @@ function App() {
               </div>
               
               <p className="text-sm text-neutral-600">
-                {monthlyIncome.percentage}% • Need $217/day • 16 days left
+                {monthlyIncome.percentage}% • Need $0/day • 0 days left
               </p>
             </div>
           </div>
