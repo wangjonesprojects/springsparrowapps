@@ -175,7 +175,7 @@ function App() {
               </div>
               
               <p className="text-sm text-neutral-600">
-                {capexReserve.percentage}% • Target: Dec 1
+                {capexReserve.percentage}% • Target: Dec 31, 2026
               </p>
             </div>
           </div>
