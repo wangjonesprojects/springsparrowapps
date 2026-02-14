@@ -4,8 +4,8 @@
  * ============================================================================
  * 
  * Component: App (Main Dashboard)
- * Version: 1.0.0
- * Last Updated: 2026-02-14
+ * Version: 1.1.0
+ * Last Updated: 2026-02-15
  * 
  * PURPOSE:
  * Main dashboard showing Spring Sparrow LLC's financial health at a glance.
@@ -15,6 +15,16 @@
  * This is Keeya's command center for managing 3 rental units (Robin's Roost,
  * Dove's Den, Stadium District). Shows real-time financial position to make
  * strategic decisions: MTR vs STR, when to spend, distribution timing.
+ * 
+ * CHANGELOG v1.1.0:
+ * - Added property thumbnail images (Airbnb-style)
+ * - Replaced emoji with Lucide React icons
+ * - Connected Firebase real-time data fetching
+ * - Fixed regression: Jan 2026 (was March), Dec 31 target (was May 1)
+ * - Fixed regression: $0/day calculations (was $217/day)
+ * - Updated CTAs to light blue style (bg-blue-100, border-blue-600)
+ * - Reset all data to zero for fresh January 2026 entry
+ * - Added loading/error states for better UX
  * 
  * ============================================================================
  */
@@ -218,7 +228,7 @@ function App() {
           <h1 className="text-2xl font-bold text-neutral-900">
             Spring Sparrow
           </h1>
-          <p className="text-sm text-neutral-600 mt-1">March 2026</p>
+          <p className="text-sm text-neutral-600 mt-1">Jan 2026</p>
         </div>
       </header>
 
@@ -237,8 +247,8 @@ function App() {
                   CapEx Reserve
                 </h2>
               </div>
-              <span className="text-sm text-success-600 font-medium">
-                On track
+              <span className="text-sm text-neutral-400 font-medium">
+                Not started
               </span>
             </div>
             
@@ -261,7 +271,7 @@ function App() {
               </div>
               
               <p className="text-sm text-neutral-600">
-                {capexReserve.percentage}% • Target: May 1
+                {capexReserve.percentage}% • Target: Dec 31, 2026
               </p>
             </div>
           </div>
@@ -272,11 +282,11 @@ function App() {
               <div className="flex items-center gap-2">
                 <TrendingUp className="w-5 h-5 text-primary-600" />
                 <h2 className="text-lg font-semibold text-neutral-900">
-                  March Net Income
+                  Jan Net Income
                 </h2>
               </div>
-              <span className="text-sm text-warning-600 font-medium">
-                Behind pace
+              <span className="text-sm text-neutral-400 font-medium">
+                No data yet
               </span>
             </div>
             
@@ -293,13 +303,13 @@ function App() {
               {/* Progress Bar */}
               <div className="w-full bg-neutral-200 rounded-full h-3">
                 <div 
-                  className="bg-warning-500 h-3 rounded-full transition-all duration-500"
+                  className="bg-neutral-300 h-3 rounded-full transition-all duration-500"
                   style={{ width: `${monthlyIncome.percentage}%` }}
                 />
               </div>
               
               <p className="text-sm text-neutral-600">
-                {monthlyIncome.percentage}% • Need $217/day • 16 days left
+                {monthlyIncome.percentage}% • Need $0/day • 0 days left
               </p>
             </div>
           </div>
@@ -354,7 +364,7 @@ function App() {
                     
                     <button 
                       onClick={() => handleAddBooking(unit.id)}
-                      className="w-full mt-2 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg text-sm font-medium transition-colors"
+                      className="w-full mt-2 px-4 py-2 bg-blue-100 border-2 border-blue-600 text-blue-900 hover:bg-blue-200 rounded-lg text-sm font-medium transition-colors"
                     >
                       + Add Booking
                     </button>
@@ -378,9 +388,9 @@ function App() {
             </div>
             
             <div className="space-y-3">
-              <div className="bg-success-50 border border-success-200 rounded-lg p-4">
-                <p className="text-sm text-success-700 mb-2">Ready to distribute</p>
-                <p className="text-2xl font-bold text-success-900">
+              <div className="bg-neutral-50 border border-neutral-200 rounded-lg p-4">
+                <p className="text-sm text-neutral-600 mb-2">Ready to distribute</p>
+                <p className="text-2xl font-bold text-neutral-900">
                   {formatCurrency(distributions.total)}
                 </p>
               </div>
@@ -400,8 +410,11 @@ function App() {
                 </div>
               </div>
               
-              <button className="w-full mt-2 px-4 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium transition-colors">
-                Distribute Now
+              <button 
+                disabled
+                className="w-full mt-2 px-4 py-3 bg-neutral-100 border-2 border-neutral-300 text-neutral-500 rounded-lg font-medium cursor-not-allowed"
+              >
+                No funds to distribute
               </button>
             </div>
           </div>
