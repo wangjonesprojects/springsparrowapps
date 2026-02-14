@@ -10,7 +10,10 @@
  * PURPOSE:
  * Simple test button to verify Firestore connection works. Adds a sample
  * booking to Firebase when clicked. Will be removed once real forms are built.
- * 
+ *
+ * Primary dev user UUID (when signed in with real account, data goes here):
+ * B52ye9yyQ0QINoHdEe4nH5niDef2
+ *
  * ============================================================================
  */
 
