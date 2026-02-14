@@ -121,28 +121,28 @@ function TestButton() {
 
       {!user ? (
         <>
-          <p className="text-sm text-neutral-600 mb-3">
+          <p className="text-sm text-neutral-600 mb-4">
             Sign in with Email or Google so test data is saved to your account.
           </p>
-          <form onSubmit={handleEmailSignIn} className="space-y-2 mb-3">
+          <form onSubmit={handleEmailSignIn} className="space-y-3 mb-4">
             <input
               type="email"
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-3 py-2 border border-neutral-300 rounded-lg text-sm"
+              className="w-full px-4 py-3 border border-neutral-300 rounded-lg text-sm"
             />
             <input
               type="password"
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-3 py-2 border border-neutral-300 rounded-lg text-sm"
+              className="w-full px-4 py-3 border border-neutral-300 rounded-lg text-sm"
             />
             <button
               type="submit"
               disabled={loading}
-              className="w-full px-4 py-2 bg-blue-100 border-2 border-blue-600 text-blue-900 hover:bg-blue-200 disabled:bg-neutral-100 disabled:border-neutral-300 disabled:text-neutral-500 rounded-lg font-medium text-sm transition-colors"
+              className="w-full px-5 py-3.5 bg-blue-100 border-2 border-blue-600 text-blue-900 hover:bg-blue-200 disabled:bg-neutral-100 disabled:border-neutral-300 disabled:text-neutral-500 rounded-lg font-medium text-sm transition-colors"
             >
               {loading ? 'Signing in...' : 'Sign in with Email'}
             </button>
@@ -151,28 +151,28 @@ function TestButton() {
             type="button"
             onClick={handleGoogleSignIn}
             disabled={loading}
-            className="w-full px-4 py-2 bg-blue-100 border-2 border-blue-600 text-blue-900 hover:bg-blue-200 rounded-lg font-medium text-sm transition-colors"
+            className="w-full px-5 py-3.5 bg-blue-100 border-2 border-blue-600 text-blue-900 hover:bg-blue-200 rounded-lg font-medium text-sm transition-colors"
           >
             Sign in with Google
           </button>
         </>
       ) : (
         <>
-          <p className="text-sm text-neutral-600 mb-3">
+          <p className="text-sm text-neutral-600 mb-4">
             Signed in as <strong>{user.email || user.uid}</strong>
           </p>
-          <div className="flex gap-2">
+          <div className="flex gap-3">
             <button
               onClick={handleAddTestBooking}
               disabled={loading}
-              className="flex-1 px-4 py-3 bg-blue-100 border-2 border-blue-600 text-blue-900 hover:bg-blue-200 disabled:bg-neutral-100 disabled:border-neutral-300 disabled:text-neutral-500 rounded-lg font-medium transition-colors"
+              className="flex-1 px-5 py-3.5 bg-blue-100 border-2 border-blue-600 text-blue-900 hover:bg-blue-200 disabled:bg-neutral-100 disabled:border-neutral-300 disabled:text-neutral-500 rounded-lg font-medium transition-colors"
             >
               {loading ? 'Adding...' : 'Add Test Booking to Firebase'}
             </button>
             <button
               type="button"
               onClick={handleSignOut}
-              className="px-3 py-2 bg-blue-100 border-2 border-blue-600 text-blue-900 hover:bg-blue-200 rounded-lg text-sm font-medium transition-colors"
+              className="px-5 py-3.5 bg-violet-100 border-2 border-violet-600 text-violet-900 hover:bg-violet-200 rounded-lg text-sm font-medium transition-colors"
             >
               Sign out
             </button>
@@ -182,7 +182,7 @@ function TestButton() {
 
       {message && (
         <p
-          className={`mt-3 text-sm ${
+          className={`mt-5 text-sm ${
             message.includes('Success') || message.includes('Signed in')
               ? 'text-success-600'
               : 'text-danger-600'
