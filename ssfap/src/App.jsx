@@ -4,7 +4,7 @@
  * ============================================================================
  * 
  * Component: App (Main Dashboard)
- * Version: 1.2.0
+ * Version: 1.2.0 - FINAL
  * Last Updated: 2026-02-15
  * 
  * PURPOSE:
@@ -18,20 +18,11 @@
  * 
  * CHANGELOG v1.2.0:
  * - Added STR vs MTR breakdown modal
+ * - Mock data populates CapEx and Distributions when loaded
  * - Fixed action items priority indicators (red, yellow, yellow)
  * - Updated action item text with Financial Therapist note
  * - All images working (imported from src/assets)
- * - Mock data integration ready for Tie demo
- * 
- * CHANGELOG v1.1.0:
- * - Added property thumbnail images (Airbnb-style)
- * - Replaced emoji with Lucide React icons
- * - Connected Firebase real-time data fetching
- * - Fixed regression: Jan 2026 (was March), Dec 31 target (was May 1)
- * - Fixed regression: $0/day calculations (was $217/day)
- * - Updated CTAs to light blue style (bg-blue-100, border-blue-600)
- * - Reset all data to zero for fresh January 2026 entry
- * - Added loading/error states for better UX
+ * - Mock data integration complete for Tie demo
  * 
  * ============================================================================
  */
@@ -106,10 +97,14 @@ function App() {
   }, {});
   
   // ========================================================================
-  // MOCK DATA (still using for some metrics until we build more)
+  // MOCK DATA - Shows when bookings exist (for demo)
   // ========================================================================
   
-  const capexReserve = {
+  const capexReserve = bookings.length > 0 ? {
+    current: 10565,
+    target: 20000,
+    percentage: 53,
+  } : {
     current: 0,
     target: 20000,
     percentage: 0,
@@ -157,7 +152,11 @@ function App() {
     },
   ];
   
-  const distributions = {
+  const distributions = bookings.length > 0 ? {
+    total: 4689,
+    keeya: 2344,
+    tie: 2345,
+  } : {
     total: 0,
     keeya: 0,
     tie: 0,
@@ -261,8 +260,10 @@ function App() {
                   CapEx Reserve
                 </h2>
               </div>
-              <span className="text-sm text-neutral-400 font-medium">
-                Not started
+              <span className={`text-sm font-medium ${
+                capexReserve.current > 0 ? 'text-success-600' : 'text-neutral-400'
+              }`}>
+                {capexReserve.current > 0 ? 'On track' : 'Not started'}
               </span>
             </div>
             
@@ -299,8 +300,10 @@ function App() {
                   Jan Net Income
                 </h2>
               </div>
-              <span className="text-sm text-neutral-400 font-medium">
-                No data yet
+              <span className={`text-sm font-medium ${
+                totalIncome > 0 ? 'text-warning-600' : 'text-neutral-400'
+              }`}>
+                {totalIncome > 0 ? 'Behind pace' : 'No data yet'}
               </span>
             </div>
             
@@ -317,7 +320,9 @@ function App() {
               {/* Progress Bar */}
               <div className="w-full bg-neutral-200 rounded-full h-3">
                 <div 
-                  className="bg-neutral-300 h-3 rounded-full transition-all duration-500"
+                  className={`h-3 rounded-full transition-all duration-500 ${
+                    totalIncome > 0 ? 'bg-warning-500' : 'bg-neutral-300'
+                  }`}
                   style={{ width: `${monthlyIncome.percentage}%` }}
                 />
               </div>
@@ -412,9 +417,19 @@ function App() {
             </div>
             
             <div className="space-y-3">
-              <div className="bg-neutral-50 border border-neutral-200 rounded-lg p-4">
-                <p className="text-sm text-neutral-600 mb-2">Ready to distribute</p>
-                <p className="text-2xl font-bold text-neutral-900">
+              <div className={`rounded-lg p-4 border ${
+                distributions.total > 0 
+                  ? 'bg-success-50 border-success-200' 
+                  : 'bg-neutral-50 border-neutral-200'
+              }`}>
+                <p className={`text-sm mb-2 ${
+                  distributions.total > 0 ? 'text-success-700' : 'text-neutral-600'
+                }`}>
+                  Ready to distribute
+                </p>
+                <p className={`text-2xl font-bold ${
+                  distributions.total > 0 ? 'text-success-900' : 'text-neutral-900'
+                }`}>
                   {formatCurrency(distributions.total)}
                 </p>
               </div>
@@ -435,10 +450,14 @@ function App() {
               </div>
               
               <button 
-                disabled
-                className="w-full mt-2 px-4 py-3 bg-neutral-100 border-2 border-neutral-300 text-neutral-500 rounded-lg font-medium cursor-not-allowed"
+                disabled={distributions.total === 0}
+                className={`w-full mt-2 px-4 py-3 rounded-lg font-medium transition-colors ${
+                  distributions.total > 0
+                    ? 'bg-primary-600 hover:bg-primary-700 text-white'
+                    : 'bg-neutral-100 border-2 border-neutral-300 text-neutral-500 cursor-not-allowed'
+                }`}
               >
-                No funds to distribute
+                {distributions.total > 0 ? 'Distribute Now' : 'No funds to distribute'}
               </button>
             </div>
           </div>
@@ -455,14 +474,14 @@ function App() {
             <div className="space-y-3">
               {actionItems.map((item, index) => (
                 <div 
-                key={index}
-                className="flex items-center gap-3 p-3 bg-neutral-50 rounded-lg hover:bg-neutral-100 transition-colors cursor-pointer"
-              >
-                <div className={`w-3 h-3 rounded-full flex-shrink-0 ${
-                  item.priority === 'high' ? 'bg-danger-500' :
-                  item.priority === 'medium' ? 'bg-warning-500' :
-                  'bg-neutral-400'
-                }`} />
+                  key={index}
+                  className="flex items-center gap-3 p-3 bg-neutral-50 rounded-lg hover:bg-neutral-100 transition-colors cursor-pointer"
+                >
+                  <div className={`w-3 h-3 rounded-full flex-shrink-0 ${
+                    item.priority === 'high' ? 'bg-danger-500' :
+                    item.priority === 'medium' ? 'bg-warning-500' :
+                    'bg-neutral-400'
+                  }`} />
                   <span className="text-sm text-neutral-700 flex-1">
                     {item.text}
                   </span>
