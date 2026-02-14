@@ -4,7 +4,7 @@
  * ============================================================================
  * 
  * Component: App (Main Dashboard)
- * Version: 1.1.0
+ * Version: 1.2.0
  * Last Updated: 2026-02-15
  * 
  * PURPOSE:
@@ -15,6 +15,13 @@
  * This is Keeya's command center for managing 3 rental units (Robin's Roost,
  * Dove's Den, Stadium District). Shows real-time financial position to make
  * strategic decisions: MTR vs STR, when to spend, distribution timing.
+ * 
+ * CHANGELOG v1.2.0:
+ * - Added STR vs MTR breakdown modal
+ * - Fixed action items priority indicators (red, yellow, yellow)
+ * - Updated action item text with Financial Therapist note
+ * - All images working (imported from src/assets)
+ * - Mock data integration ready for Tie demo
  * 
  * CHANGELOG v1.1.0:
  * - Added property thumbnail images (Airbnb-style)
@@ -32,8 +39,12 @@
 import { useState, useEffect } from 'react';
 import TestButton from './components/TestButton';
 import BookingForm from './components/BookingForm';
+import BreakdownModal from './components/BreakdownModal';
 import { Home, TrendingUp, Gem, DollarSign, Zap } from 'lucide-react';
 import { getBookingsByMonth, getCurrentMonth } from './services/firebase/firestoreService';
+import robinsRoostImg from './assets/robinsroost_thumbnail.png';
+import dovesDenImg from './assets/doveden_thumbnail.png';
+import stadiumDistrictImg from './assets/stadiumdistrict_thumbnail.png';
 
 function App() {
   // ========================================================================
@@ -47,6 +58,9 @@ function App() {
   // Booking form modal state
   const [showBookingForm, setShowBookingForm] = useState(false);
   const [selectedUnit, setSelectedUnit] = useState(null);
+  
+  // Breakdown modal state
+  const [showBreakdown, setShowBreakdown] = useState(false);
   
   // Hardcoded user ID for now (will add auth later)
   const userId = 'B52ye9yyQ0QINoHdEe4nH5niDef2';
@@ -111,7 +125,7 @@ function App() {
     {
       id: 'robins-roost',
       name: "Robin's Roost",
-      image: '/assets/robinsroost_thumbnail.png',
+      image: robinsRoostImg,
       nights: unitNights['robins-roost'] || 0,
       target: 15,
       netIncome: bookings
@@ -122,7 +136,7 @@ function App() {
     {
       id: 'doves-den',
       name: "Dove's Den",
-      image: '/assets/doveden_thumbnail.png',
+      image: dovesDenImg,
       nights: unitNights['doves-den'] || 0,
       target: 15,
       netIncome: bookings
@@ -133,7 +147,7 @@ function App() {
     {
       id: 'stadium-district',
       name: 'Stadium District',
-      image: '/assets/stadiumdistrict_thumbnail.png',
+      image: stadiumDistrictImg,
       nights: unitNights['stadium-district'] || 0,
       target: 18,
       netIncome: bookings
@@ -152,7 +166,7 @@ function App() {
   const actionItems = [
     { text: 'Push Robin bookings', priority: 'high' },
     { text: 'Stadium MTR decision', priority: 'medium' },
-    { text: 'Electrical repair pending', priority: 'low' },
+    { text: 'Electrical repair pending - Talked with Financial Therapist', priority: 'medium' },
   ];
 
   // ========================================================================
@@ -311,6 +325,16 @@ function App() {
               <p className="text-sm text-neutral-600">
                 {monthlyIncome.percentage}% • Need $0/day • 0 days left
               </p>
+              
+              {/* Breakdown Link - Shows when data exists */}
+              {bookings.length > 0 && (
+                <button
+                  onClick={() => setShowBreakdown(true)}
+                  className="text-sm text-primary-600 hover:text-primary-700 font-medium"
+                >
+                  View STR vs MTR Breakdown →
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -458,6 +482,14 @@ function App() {
             unitId={selectedUnit}
             onClose={() => setShowBookingForm(false)}
             onSuccess={handleBookingSuccess}
+          />
+        )}
+
+        {/* Breakdown Modal */}
+        {showBreakdown && (
+          <BreakdownModal
+            bookings={bookings}
+            onClose={() => setShowBreakdown(false)}
           />
         )}
       </main>

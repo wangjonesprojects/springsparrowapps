@@ -1,0 +1,99 @@
+{
+    "capexReserve": {
+      "current": 10565,
+      "target": 20000,
+      "percentage": 53
+    },
+    "distributions": {
+      "total": 4689,
+      "keeya": 2344,
+      "tie": 2345
+    },
+    "bookings": [
+      {
+        "unitId": "robins-roost",
+        "type": "STR",
+        "checkIn": "2026-01-03",
+        "checkOut": "2026-01-06",
+        "nights": 3,
+        "grossPayout": 420,
+        "platform": "Airbnb",
+        "platformFee": 63,
+        "cleaningCost": 150,
+        "netIncome": 207,
+        "month": "2026-01"
+      },
+      {
+        "unitId": "robins-roost",
+        "type": "STR",
+        "checkIn": "2026-01-10",
+        "checkOut": "2026-01-14",
+        "nights": 4,
+        "grossPayout": 560,
+        "platform": "Vrbo",
+        "platformFee": 84,
+        "cleaningCost": 150,
+        "netIncome": 326,
+        "month": "2026-01"
+      },
+      {
+        "unitId": "robins-roost",
+        "type": "STR",
+        "checkIn": "2026-01-20",
+        "checkOut": "2026-01-25",
+        "nights": 5,
+        "grossPayout": 700,
+        "platform": "Airbnb",
+        "platformFee": 105,
+        "cleaningCost": 150,
+        "netIncome": 445,
+        "month": "2026-01"
+      },
+      {
+        "unitId": "doves-den",
+        "type": "MTR",
+        "checkIn": "2026-01-01",
+        "checkOut": "2026-01-31",
+        "nights": 30,
+        "grossPayout": 2400,
+        "platform": "Furnished Finder",
+        "platformFee": 240,
+        "cleaningCost": 350,
+        "netIncome": 1810,
+        "baseMonthlyRent": 2000,
+        "damageProtection": 80,
+        "hasPets": true,
+        "petCount": 1,
+        "petFeePerMonth": 50,
+        "petDeposit": 250,
+        "securityDeposit": 500,
+        "month": "2026-01"
+      },
+      {
+        "unitId": "stadium-district",
+        "type": "STR",
+        "checkIn": "2026-01-08",
+        "checkOut": "2026-01-11",
+        "nights": 3,
+        "grossPayout": 390,
+        "platform": "Airbnb",
+        "platformFee": 58.50,
+        "cleaningCost": 150,
+        "netIncome": 181.50,
+        "month": "2026-01"
+      },
+      {
+        "unitId": "stadium-district",
+        "type": "STR",
+        "checkIn": "2026-01-15",
+        "checkOut": "2026-01-25",
+        "nights": 10,
+        "grossPayout": 1300,
+        "platform": "Airbnb",
+        "platformFee": 195,
+        "cleaningCost": 150,
+        "netIncome": 955,
+        "month": "2026-01"
+      }
+    ]
+  }
