@@ -40,7 +40,7 @@ import {
     orderBy,
     Timestamp 
   } from 'firebase/firestore';
-  import { db } from './firebaseConfig';
+  import { db } from './firebaseConfig.js';
   
   /**
    * @typedef {import('./dataModels').Booking} Booking
