@@ -26,7 +26,7 @@ import {
   onAuthStateChanged,
 } from 'firebase/auth';
 import { auth } from '../firebase/firebaseConfig';
-import { addBooking } from '../services/firebase/firestoreService';
+import { addBooking, deleteAllBookings } from '../services/firebase/firestoreService';
 
 function TestButton() {
   const [user, setUser] = useState(auth.currentUser);
@@ -113,6 +113,37 @@ function TestButton() {
     }
   };
 
+  const handleResetData = async () => {
+    if (!user) {
+      setMessage('❌ Sign in first');
+      return;
+    }
+
+    const confirmed = window.confirm(
+      '⚠️ WARNING: This will DELETE ALL bookings!\n\nAre you sure you want to reset to zero?'
+    );
+    
+    if (!confirmed) return;
+
+    setLoading(true);
+    setMessage('');
+
+    try {
+      const count = await deleteAllBookings(user.uid);
+      setMessage(`✅ Deleted ${count} bookings. Refreshing...`);
+      
+      // Auto-refresh after 2 seconds
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
+    } catch (error) {
+      setMessage(`❌ Error: ${error.message}`);
+      console.error('Error resetting data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="bg-white rounded-xl shadow-sm p-6 border border-neutral-200">
       <h2 className="text-lg font-semibold text-neutral-900 mb-4">
@@ -161,18 +192,30 @@ function TestButton() {
           <p className="text-sm text-neutral-600 mb-4 p-[5px]">
             Signed in as <strong>{user.email || user.uid}</strong>
           </p>
-          <div className="flex gap-3">
+          <div className="space-y-3">
+            {/* Add Test Booking Button */}
             <button
               onClick={handleAddTestBooking}
               disabled={loading}
-              className="flex-1 px-5 py-3.5 bg-blue-100 border-2 border-blue-600 text-blue-900 hover:bg-blue-200 disabled:bg-neutral-100 disabled:border-neutral-300 disabled:text-neutral-500 rounded-lg font-medium transition-colors"
+              className="w-full px-5 py-3.5 bg-blue-100 border-2 border-blue-600 text-blue-900 hover:bg-blue-200 disabled:bg-neutral-100 disabled:border-neutral-300 disabled:text-neutral-500 rounded-lg font-medium transition-colors"
             >
               {loading ? 'Adding...' : 'Add Test Booking to Firebase'}
             </button>
+
+            {/* Reset All Bookings Button */}
+            <button
+              onClick={handleResetData}
+              disabled={loading}
+              className="w-full px-5 py-3.5 bg-danger-100 border-2 border-danger-600 text-danger-900 hover:bg-danger-200 disabled:bg-neutral-100 disabled:border-neutral-300 disabled:text-neutral-500 rounded-lg font-medium transition-colors"
+            >
+              {loading ? 'Resetting...' : '🔄 Reset All Bookings (Start Fresh)'}
+            </button>
+
+            {/* Sign Out Button */}
             <button
               type="button"
               onClick={handleSignOut}
-              className="px-5 py-3.5 bg-violet-100 border-2 border-violet-600 text-violet-900 hover:bg-violet-200 rounded-lg text-sm font-medium transition-colors"
+              className="w-full px-5 py-3.5 bg-violet-100 border-2 border-violet-600 text-violet-900 hover:bg-violet-200 rounded-lg text-sm font-medium transition-colors"
             >
               Sign out
             </button>
@@ -183,7 +226,7 @@ function TestButton() {
       {message && (
         <p
           className={`mt-[30px] text-sm p-[5px] ${
-            message.includes('Success') || message.includes('Signed in')
+            message.includes('Success') || message.includes('Signed in') || message.includes('Deleted')
               ? 'text-success-600'
               : 'text-danger-600'
           }`}
