@@ -31,7 +31,7 @@ import { useState, useEffect } from 'react';
 import TestButton from './components/TestButton';
 import BookingForm from './components/BookingForm';
 import BreakdownModal from './components/BreakdownModal';
-import { Home, TrendingUp, Gem, DollarSign, Zap } from 'lucide-react';
+import { Home, TrendingUp, Gem, DollarSign, Zap, BarChart3, CheckCircle } from 'lucide-react';
 import { getBookingsByMonth, getCurrentMonth } from './services/firebase/firestoreService';
 import robinsRoostImg from './assets/robinsroost_thumbnail.png';
 import dovesDenImg from './assets/doveden_thumbnail.png';
@@ -236,12 +236,45 @@ function App() {
   return (
     <div className="min-h-screen bg-neutral-50">
       {/* Header */}
+      {/* Header */}
       <header className="bg-white border-b border-neutral-200 px-4 py-4">
         <div className="max-w-7xl mx-auto">
-          <h1 className="text-2xl font-bold text-neutral-900">
-            Spring Sparrow
-          </h1>
-          <p className="text-sm text-neutral-600 mt-1">Jan 2026</p>
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl font-bold text-neutral-900">
+                Spring Sparrow
+              </h1>
+              <p className="text-sm text-neutral-600 mt-1">Jan 2026</p>
+            </div>
+            
+            {/* Mock Data Banner */}
+            {/* Mock Data Banner */}
+            {bookings.length > 0 ? (
+              <div className="bg-yellow-50 border-2 border-yellow-400 px-4 py-2 rounded-lg flex items-center gap-2">
+                <BarChart3 className="w-5 h-5 text-yellow-600" />
+                <div>
+                  <p className="text-sm font-semibold text-yellow-900">
+                    Mock Data Demo
+                  </p>
+                  <p className="text-xs text-yellow-700">
+                    Real data coming Monday
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <div className="bg-blue-50 border-2 border-blue-400 px-4 py-2 rounded-lg flex items-center gap-2">
+                <CheckCircle className="w-5 h-5 text-blue-600" />
+                <div>
+                  <p className="text-sm font-semibold text-blue-900">
+                    Ready for Real Data
+                  </p>
+                  <p className="text-xs text-blue-700">
+                    Add bookings to get started
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </header>
 
@@ -474,14 +507,14 @@ function App() {
             <div className="space-y-3">
               {actionItems.map((item, index) => (
                 <div 
-                  key={index}
-                  className="flex items-center gap-3 p-3 bg-neutral-50 rounded-lg hover:bg-neutral-100 transition-colors cursor-pointer"
-                >
-                  <div className={`w-3 h-3 rounded-full flex-shrink-0 ${
-                    item.priority === 'high' ? 'bg-danger-500' :
-                    item.priority === 'medium' ? 'bg-warning-500' :
-                    'bg-neutral-400'
-                  }`} />
+                key={index}
+                className="flex items-center gap-3 p-3 bg-white rounded-lg hover:bg-neutral-50 transition-colors cursor-pointer border border-neutral-100"
+              >
+                <div className={`w-3 h-3 rounded-full flex-shrink-0 ${
+                  item.priority === 'high' ? 'bg-danger-500' :
+                  item.priority === 'medium' ? 'bg-warning-500' :
+                  'bg-neutral-400'
+                }`} />
                   <span className="text-sm text-neutral-700 flex-1">
                     {item.text}
                   </span>
