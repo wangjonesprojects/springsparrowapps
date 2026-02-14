@@ -455,14 +455,14 @@ function App() {
             <div className="space-y-3">
               {actionItems.map((item, index) => (
                 <div 
-                  key={index}
-                  className="flex items-center gap-3 p-3 bg-neutral-50 rounded-lg hover:bg-neutral-100 transition-colors cursor-pointer"
-                >
-                  <div className={`w-2 h-2 rounded-full ${
-                    item.priority === 'high' ? 'bg-danger-500' :
-                    item.priority === 'medium' ? 'bg-warning-500' :
-                    'bg-neutral-400'
-                  }`} />
+                key={index}
+                className="flex items-center gap-3 p-3 bg-neutral-50 rounded-lg hover:bg-neutral-100 transition-colors cursor-pointer"
+              >
+                <div className={`w-3 h-3 rounded-full flex-shrink-0 ${
+                  item.priority === 'high' ? 'bg-danger-500' :
+                  item.priority === 'medium' ? 'bg-warning-500' :
+                  'bg-neutral-400'
+                }`} />
                   <span className="text-sm text-neutral-700 flex-1">
                     {item.text}
                   </span>

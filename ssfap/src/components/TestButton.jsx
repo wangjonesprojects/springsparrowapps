@@ -4,7 +4,7 @@
  * ============================================================================
  *
  * Component: TestButton
- * Version: 2.0.0
+ * Version: 2.1.0
  * Last Updated: 2026-02-15
  *
  * PURPOSE:
@@ -147,7 +147,7 @@ function TestButton() {
     }
 
     const confirmed = window.confirm(
-      '🎬 DEMO MODE\n\nThis will load realistic mock data to show Tie how the app works!\n\nContinue?'
+      '🎬 DEMO MODE\n\nThis will load realistic mock data to show Tie how the app works!\n\n6 bookings total\n\nContinue?'
     );
     
     if (!confirmed) return;
@@ -158,9 +158,10 @@ function TestButton() {
     try {
       const userId = user.uid;
       
-      // Mock bookings - realistic January 2026 data
+      console.log('🎬 Starting mock data load...');
+      
+      // HARDCODED MOCK DATA
       const mockBookings = [
-        // Robin's Roost - 12 nights
         {
           unitId: 'robins-roost',
           type: 'STR',
@@ -200,49 +201,26 @@ function TestButton() {
           netIncome: 445,
           month: '2026-01',
         },
-        
-        // Dove's Den - 18 nights
         {
           unitId: 'doves-den',
-          type: 'STR',
-          checkIn: new Date('2026-01-05'),
-          checkOut: new Date('2026-01-09'),
-          nights: 4,
-          grossPayout: 600,
-          platform: 'Airbnb',
-          platformFee: 90,
-          cleaningCost: 150,
-          netIncome: 360,
+          type: 'MTR',
+          checkIn: new Date('2026-01-01'),
+          checkOut: new Date('2026-01-31'),
+          nights: 30,
+          grossPayout: 2400,
+          platform: 'Furnished Finder',
+          platformFee: 240,
+          cleaningCost: 350,
+          netIncome: 1810,
+          baseMonthlyRent: 2000,
+          damageProtection: 80,
+          hasPets: true,
+          petCount: 1,
+          petFeePerMonth: 50,
+          petDeposit: 250,
+          securityDeposit: 500,
           month: '2026-01',
         },
-        {
-          unitId: 'doves-den',
-          type: 'STR',
-          checkIn: new Date('2026-01-12'),
-          checkOut: new Date('2026-01-19'),
-          nights: 7,
-          grossPayout: 1050,
-          platform: 'Airbnb',
-          platformFee: 157.50,
-          cleaningCost: 150,
-          netIncome: 742.50,
-          month: '2026-01',
-        },
-        {
-          unitId: 'doves-den',
-          type: 'STR',
-          checkIn: new Date('2026-01-22'),
-          checkOut: new Date('2026-01-29'),
-          nights: 7,
-          grossPayout: 1050,
-          platform: 'Vrbo',
-          platformFee: 157.50,
-          cleaningCost: 150,
-          netIncome: 742.50,
-          month: '2026-01',
-        },
-        
-        // Stadium District - 13 nights
         {
           unitId: 'stadium-district',
           type: 'STR',
@@ -271,19 +249,28 @@ function TestButton() {
         },
       ];
 
-      // Add all mock bookings
+      console.log('✅ Mock bookings ready:', mockBookings);
+
+      // Add all mock bookings to Firebase
+      let addedCount = 0;
       for (const booking of mockBookings) {
-        await addBooking(userId, booking);
+        console.log(`➕ Adding booking ${addedCount + 1}/${mockBookings.length}...`);
+        const bookingId = await addBooking(userId, booking);
+        console.log(`✅ Added booking with ID: ${bookingId}`);
+        addedCount++;
       }
 
-      setMessage(`✅ Demo data loaded! ${mockBookings.length} bookings added. Refreshing...`);
+      console.log(`🎉 SUCCESS! Added ${addedCount} bookings total!`);
+      setMessage(`✅ Demo data loaded! ${addedCount} bookings added. Refreshing...`);
       
       setTimeout(() => {
+        console.log('🔄 Reloading page...');
         window.location.reload();
       }, 2000);
     } catch (error) {
+      console.error('❌ ERROR loading mock data:', error);
+      console.error('Error details:', error.message);
       setMessage(`❌ Error: ${error.message}`);
-      console.error('Error loading mock data:', error);
     } finally {
       setLoading(false);
     }
@@ -347,7 +334,7 @@ function TestButton() {
               {loading ? 'Adding...' : 'Add Test Booking to Firebase'}
             </button>
 
-            {/* Load Mock Data Button - NEW! */}
+            {/* Load Mock Data Button */}
             <button
               onClick={handleLoadMockData}
               disabled={loading}
