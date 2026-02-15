@@ -437,8 +437,8 @@ function App() {
           </div>
         </div>
 
-        {/* Bottom Row: Distributions + Action Items */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+ {/* Bottom Row: Distributions + Action Items */}
+ <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           
           {/* Distributions */}
           <div className="bg-white rounded-xl shadow-sm p-6 border border-neutral-200">
@@ -452,16 +452,16 @@ function App() {
             <div className="space-y-3">
               <div className={`rounded-lg p-4 border ${
                 distributions.total > 0 
-                  ? 'bg-success-50 border-success-200' 
+                  ? 'bg-green-50 border-green-200' 
                   : 'bg-neutral-50 border-neutral-200'
               }`}>
                 <p className={`text-sm mb-2 ${
-                  distributions.total > 0 ? 'text-success-700' : 'text-neutral-600'
+                  distributions.total > 0 ? 'text-green-700' : 'text-neutral-600'
                 }`}>
                   Ready to distribute
                 </p>
                 <p className={`text-2xl font-bold ${
-                  distributions.total > 0 ? 'text-success-900' : 'text-neutral-900'
+                  distributions.total > 0 ? 'text-green-900' : 'text-neutral-900'
                 }`}>
                   {formatCurrency(distributions.total)}
                 </p>
@@ -485,7 +485,7 @@ function App() {
               {/* Distribution Button - GREEN when funds available */}
               {distributions.total > 0 ? (
                 <button 
-                  className="w-full mt-2 px-4 py-3 bg-success-600 hover:bg-success-700 text-white rounded-lg font-medium transition-colors"
+                  className="w-full mt-2 px-4 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-colors shadow-sm"
                 >
                   Distribute Now
                 </button>
