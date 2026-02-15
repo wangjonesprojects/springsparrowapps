@@ -19,10 +19,11 @@
  * CHANGELOG v1.2.0:
  * - Added STR vs MTR breakdown modal
  * - Mock data populates CapEx and Distributions when loaded
- * - Fixed action items priority indicators (red, yellow, yellow)
+ * - Custom status indicators (danger=red, pending=yellow)
  * - Updated action item text with Financial Therapist note
  * - All images working (imported from src/assets)
  * - Mock data integration complete for Tie demo
+ * - BEGIN/END comments on all major sections
  * 
  * ============================================================================
  */
@@ -163,9 +164,9 @@ function App() {
   };
   
   const actionItems = [
-    { text: 'Push Robin bookings', priority: 'high' },
-    { text: 'Stadium MTR decision', priority: 'medium' },
-    { text: 'Electrical repair pending - Talked with Financial Therapist', priority: 'medium' },
+    { text: 'Push Robin bookings', priority: 'danger' },
+    { text: 'Stadium MTR decision', priority: 'pending' },
+    { text: 'Electrical repair pending - Talked with Financial Therapist', priority: 'danger' },
   ];
 
   // ========================================================================
@@ -235,8 +236,10 @@ function App() {
   
   return (
     <div className="min-h-screen bg-neutral-50">
-      {/* Header */}
-      {/* Header */}
+      
+      {/* ============================================================ */}
+      {/* BEGIN: Header with Mock Data Banner                          */}
+      {/* ============================================================ */}
       <header className="bg-white border-b border-neutral-200 px-4 py-4">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center justify-between">
@@ -247,7 +250,6 @@ function App() {
               <p className="text-sm text-neutral-600 mt-1">Jan 2026</p>
             </div>
             
-            {/* Mock Data Banner */}
             {/* Mock Data Banner */}
             {bookings.length > 0 ? (
               <div className="bg-yellow-50 border-2 border-yellow-400 px-4 py-2 rounded-lg flex items-center gap-2">
@@ -277,11 +279,16 @@ function App() {
           </div>
         </div>
       </header>
+      {/* ============================================================ */}
+      {/* END: Header with Mock Data Banner                            */}
+      {/* ============================================================ */}
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 py-6 space-y-6">
         
-        {/* Top Metrics Row */}
+        {/* ============================================================ */}
+        {/* BEGIN: Top Metrics Row (CapEx + Monthly Income)              */}
+        {/* ============================================================ */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           
           {/* CapEx Reserve Card */}
@@ -310,7 +317,6 @@ function App() {
                 </span>
               </div>
               
-              {/* Progress Bar */}
               <div className="w-full bg-neutral-200 rounded-full h-3">
                 <div 
                   className="bg-success-500 h-3 rounded-full transition-all duration-500"
@@ -350,7 +356,6 @@ function App() {
                 </span>
               </div>
               
-              {/* Progress Bar */}
               <div className="w-full bg-neutral-200 rounded-full h-3">
                 <div 
                   className={`h-3 rounded-full transition-all duration-500 ${
@@ -364,7 +369,6 @@ function App() {
                 {monthlyIncome.percentage}% • Need $0/day • 0 days left
               </p>
               
-              {/* Breakdown Link - Shows when data exists */}
               {bookings.length > 0 && (
                 <button
                   onClick={() => setShowBreakdown(true)}
@@ -376,8 +380,13 @@ function App() {
             </div>
           </div>
         </div>
+        {/* ============================================================ */}
+        {/* END: Top Metrics Row (CapEx + Monthly Income)                */}
+        {/* ============================================================ */}
 
-        {/* Units Performance */}
+        {/* ============================================================ */}
+        {/* BEGIN: Unit Performance Cards                                */}
+        {/* ============================================================ */}
         <div>
           <div className="flex items-center gap-2 mb-4">
             <Home className="w-5 h-5 text-primary-600" />
@@ -392,7 +401,6 @@ function App() {
                 key={unit.id}
                 className="bg-white rounded-xl shadow-sm overflow-hidden border border-neutral-200"
               >
-                {/* Unit Image */}
                 <div className="relative h-48 bg-neutral-100">
                   <img 
                     src={unit.image} 
@@ -401,7 +409,6 @@ function App() {
                   />
                 </div>
                 
-                {/* Unit Info */}
                 <div className="p-6">
                   <div className="mb-4">
                     <h3 className="text-lg font-semibold text-neutral-900">
@@ -436,11 +443,18 @@ function App() {
             ))}
           </div>
         </div>
+        {/* ============================================================ */}
+        {/* END: Unit Performance Cards                                  */}
+        {/* ============================================================ */}
 
- {/* Bottom Row: Distributions + Action Items */}
- <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* ============================================================ */}
+        {/* BEGIN: Bottom Row (Distributions + Action Items)             */}
+        {/* ============================================================ */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           
-          {/* Distributions */}
+          {/* ============================================================ */}
+          {/* BEGIN: Owner Distributions Card                              */}
+          {/* ============================================================ */}
           <div className="bg-white rounded-xl shadow-sm p-6 border border-neutral-200">
             <div className="flex items-center gap-2 mb-4">
               <DollarSign className="w-5 h-5 text-primary-600" />
@@ -482,7 +496,6 @@ function App() {
                 </div>
               </div>
               
-              {/* Distribution Button - GREEN when funds available */}
               {distributions.total > 0 ? (
                 <button 
                   className="w-full mt-2 px-4 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-colors shadow-sm"
@@ -499,8 +512,13 @@ function App() {
               )}
             </div>
           </div>
+          {/* ============================================================ */}
+          {/* END: Owner Distributions Card                                */}
+          {/* ============================================================ */}
           
-          {/* Action Items */}
+          {/* ============================================================ */}
+          {/* BEGIN: Action Items Card                                     */}
+          {/* ============================================================ */}
           <div className="bg-white rounded-xl shadow-sm p-6 border border-neutral-200">
             <div className="flex items-center gap-2 mb-4">
               <Zap className="w-5 h-5 text-primary-600" />
@@ -510,17 +528,21 @@ function App() {
             </div>
             
             <div className="space-y-3">
-            {actionItems.map((item, index) => (
+              {actionItems.map((item, index) => (
                 <div 
                   key={index}
                   className="flex items-center gap-3 p-3 bg-white rounded-lg hover:bg-neutral-50 transition-colors cursor-pointer border border-neutral-200"
                 >
-                  {/* Priority Indicator Dot - BIGGER & MORE VISIBLE */}
-                  <span className={`w-4 h-4 rounded-full flex-shrink-0 ring-2 ${
-                    item.priority === 'high' ? 'bg-danger-500 ring-danger-200' :
-                    item.priority === 'medium' ? 'bg-warning-500 ring-warning-200' :
-                    'bg-neutral-400 ring-neutral-200'
-                  }`} />
+                  <span 
+                    className={`
+                      h-4 w-4 rounded-full flex-shrink-0 border-2 border-[#E6E6E6]
+                      ${item.priority === 'danger' ? 'bg-red-500' : ''}
+                      ${item.priority === 'pending' ? 'bg-yellow-500' : ''}
+                      ${item.priority === 'easy' ? 'bg-green-500' : ''}
+                      ${item.priority === 'undecided' ? 'bg-gray-400' : ''}
+                    `}
+                  />
+                  
                   <span className="text-sm text-neutral-700 flex-1">
                     {item.text}
                   </span>
@@ -529,7 +551,14 @@ function App() {
               ))}
             </div>
           </div>
+          {/* ============================================================ */}
+          {/* END: Action Items Card                                       */}
+          {/* ============================================================ */}
+
         </div>
+        {/* ============================================================ */}
+        {/* END: Bottom Row (Distributions + Action Items)               */}
+        {/* ============================================================ */}
 
         {/* Test Button - TEMPORARY */}
         <TestButton />
