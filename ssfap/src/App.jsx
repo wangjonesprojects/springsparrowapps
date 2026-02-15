@@ -482,16 +482,21 @@ function App() {
                 </div>
               </div>
               
-              <button 
-                disabled={distributions.total === 0}
-                className={`w-full mt-2 px-4 py-3 rounded-lg font-medium transition-colors ${
-                  distributions.total > 0
-                    ? 'bg-primary-600 hover:bg-primary-700 text-white'
-                    : 'bg-neutral-100 border-2 border-neutral-300 text-neutral-500 cursor-not-allowed'
-                }`}
-              >
-                {distributions.total > 0 ? 'Distribute Now' : 'No funds to distribute'}
-              </button>
+              {/* Distribution Button - GREEN when funds available */}
+              {distributions.total > 0 ? (
+                <button 
+                  className="w-full mt-2 px-4 py-3 bg-success-600 hover:bg-success-700 text-white rounded-lg font-medium transition-colors"
+                >
+                  Distribute Now
+                </button>
+              ) : (
+                <button 
+                  disabled
+                  className="w-full mt-2 px-4 py-3 bg-neutral-100 border-2 border-neutral-300 text-neutral-500 rounded-lg font-medium cursor-not-allowed"
+                >
+                  No funds to distribute
+                </button>
+              )}
             </div>
           </div>
           
@@ -505,16 +510,17 @@ function App() {
             </div>
             
             <div className="space-y-3">
-              {actionItems.map((item, index) => (
+            {actionItems.map((item, index) => (
                 <div 
-                key={index}
-                className="flex items-center gap-3 p-3 bg-white rounded-lg hover:bg-neutral-50 transition-colors cursor-pointer border border-neutral-100"
-              >
-                <div className={`w-3 h-3 rounded-full flex-shrink-0 ${
-                  item.priority === 'high' ? 'bg-danger-500' :
-                  item.priority === 'medium' ? 'bg-warning-500' :
-                  'bg-neutral-400'
-                }`} />
+                  key={index}
+                  className="flex items-center gap-3 p-3 bg-white rounded-lg hover:bg-neutral-50 transition-colors cursor-pointer border border-neutral-200"
+                >
+                  {/* Priority Indicator Dot - BIGGER & MORE VISIBLE */}
+                  <span className={`w-4 h-4 rounded-full flex-shrink-0 ring-2 ${
+                    item.priority === 'high' ? 'bg-danger-500 ring-danger-200' :
+                    item.priority === 'medium' ? 'bg-warning-500 ring-warning-200' :
+                    'bg-neutral-400 ring-neutral-200'
+                  }`} />
                   <span className="text-sm text-neutral-700 flex-1">
                     {item.text}
                   </span>
